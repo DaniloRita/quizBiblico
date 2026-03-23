@@ -1,0 +1,250 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: url("fundo.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+/* estrutura do quiz */
+#quiz {
+    position: fixed;
+    width: 60%;
+    height: 90vh;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background-color: #1E90FF;
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* TOPO */
+.topo {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+/* TEMPO */
+#tempo {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 16px;
+    white-space: nowrap;
+    flex-shrink: 0; /* 🔥 evita encolher */
+}
+
+/* BARRA */
+#barraTempo {
+    flex: 1;
+    min-width: 120px; /* 🔥 garante que aparece */
+    height: 10px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+
+#progressoTempo {
+    height: 100%;
+    width: 100%;
+    background: lime;
+    transition: width 1s linear;
+}
+
+/* BOTÕES DIREITA */
+.controles {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0; /* 🔥 não deixa esmagar a barra */
+}
+
+/* BOTÕES CONTROLE */
+.btn-controle {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.btn-controle:hover {
+    transform: scale(1.2);
+}
+
+/* PERGUNTA */
+#pergunta {
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* CONTAINER CENTRAL */
+.container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* BOTÕES RESPOSTA */
+button {
+    width: 220px;
+    padding: 12px;
+    margin: 10px auto;
+    border: none;
+    border-radius: 5px;
+    background: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* RESULTADO */
+#resultado {
+    height: 40px;
+    margin-top: 10px;
+}
+
+/* CORES */
+.correto {
+    background-color: #4CAF50 !important;
+    color: white;
+}
+
+.errado {
+    background-color: #f44336 !important;
+    color: white;
+}
+
+/* ANIMAÇÕES */
+.ponto-animado {
+    animation: crescer 0.3s ease;
+}
+
+@keyframes crescer {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.5); color: yellow; }
+    100% { transform: scale(1); }
+}
+
+.ponto-erro {
+    animation: tremer 0.3s;
+}
+
+@keyframes tremer {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+/* OVERLAY FINAL */
+#overlayFinal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0,0,0,0.7);
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.cardFinal {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    color: black;
+    width: 300px;
+
+    animation: aparecer 0.3s ease;
+}
+
+.cardFinal button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #1E90FF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+@keyframes aparecer {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+/* 🔥 RESPONSIVIDADE */
+@media (max-width: 768px) {
+    #quiz {
+        width: 95%;
+        height: 95vh;
+        padding: 10px;
+    }
+
+    /* topo quebra linha */
+    .topo {
+        flex-wrap: wrap;
+    }
+
+    /* barra ocupa linha inteira */
+    #barraTempo {
+        width: 100%;
+        order: 3;
+        margin-top: 10px;
+    }
+
+    /* tempo fica na esquerda */
+    #tempo {
+        order: 1;
+    }
+
+    /* botões ficam na direita */
+    .controles {
+        order: 2;
+        margin-left: auto;
+    }
+
+    /* botões menores */
+    .btn-controle {
+        font-size: 18px;
+    }
+
+    /* respostas menores */
+    button {
+        width: 90%;
+    }
+}
+/* agrupa tempo + estrela */
+.lado-esquerdo {
+    display: flex;
+    flex-direction: column; /* 🔥 coloca um embaixo do outro */
+    gap: 5px;
+}
+
+/* pontuação */
+#pontuacao {
+    font-size: 16px;
+}
