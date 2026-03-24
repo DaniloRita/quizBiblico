@@ -1,3 +1,5 @@
+let nome = "";
+
 const perguntas = [
     { pergunta: "Qual é a Capital de Angola?", opcoes: ["Luanda", "Benguela", "Huambo", "Lobito"], correta: 0 },
     { pergunta: "Quanto é 2+2?", opcoes: ["3", "4", "6", "0"], correta: 1 }
@@ -5,7 +7,14 @@ const perguntas = [
 
 const somAcerto = new Audio("acerto.mp3");
 const somErro = new Audio("erro.mp3");
-const musicaFundo = new Audio("fundo.mp3");
+const musicaFundo = new Audio("musica/fundo.mp3");
+musicaFundo.addEventListener("timeupdate", () => {
+    if (musicaFundo.currentTime >= 20) {
+        musicaFundo.currentTime = 0; // volta pro início
+        musicaFundo.play();
+    }
+});
+
 
 musicaFundo.loop = true;
 musicaFundo.volume = 0.3;
@@ -151,13 +160,87 @@ function atualizarPontuacao(acertou) {
 function finalizarJogo() {
     clearInterval(intervalo);
 
+    salvarHistorico(); // 🔥 salva aqui
+
     document.getElementById("overlayFinal").style.display = "flex";
 
-    document.getElementById("pontuacaoFinal").innerText =
-        "⭐ " + pontuacao + " / " + perguntasSelecionadas.length;
+document.getElementById("pontuacaoFinal").innerText =
+    nome + " fez ⭐ " + pontuacao + " / " + perguntasSelecionadas.length;
+
 }
 
 // 🔄 REINICIAR
+function iniciarJogo() {
+    nome = document.getElementById("nomeJogador").value;
+
+    if (nome.trim() === "") {
+        alert("Digite seu nome!");
+        return;
+    }
+
+    document.getElementById("telaInicial").style.display = "none";
+    document.getElementById("quiz").style.display = "flex";
+
+    carregarPergunta();
+}
+
+// ⏸️ PAUSE
+function pausarJogo() {
+    const btn = document.querySelector(".controles button");
+
+    if (!pausado) {
+        clearInterval(intervalo);
+        musicaFundo.pause(); // 🔥 PAUSA A MÚSICA
+        pausado = true;
+        btn.innerText = "▶️";
+    } else {
+        iniciarTempo();
+        musicaFundo.play(); // 🔥 VOLTA A MÚSICA
+        pausado = false;
+        btn.innerText = "⏸";
+    }
+}
+
+
+function mostrarSobre() {
+    alert("📖 Quiz Bíblico\n\nTeste seus conhecimentos da Palavra de Deus!");
+}
+
+function salvarHistorico() {
+    let historico = JSON.parse(localStorage.getItem("historico")) || [];
+
+    historico.push({
+        nome: nome,
+        pontos: pontuacao,
+        total: perguntasSelecionadas.length,
+        data: new Date().toLocaleString()
+    });
+
+    localStorage.setItem("historico", JSON.stringify(historico));
+}
+
+function verHistorico() {
+    let historico = JSON.parse(localStorage.getItem("historico")) || [];
+
+    let box = document.getElementById("historicoBox");
+    box.style.display = "block";
+
+    if (historico.length === 0) {
+        box.innerHTML = "Sem histórico ainda.";
+        return;
+    }
+
+    box.innerHTML = "<h3>Histórico</h3>";
+
+    historico.reverse().forEach(item => {
+        box.innerHTML += `
+            <p>
+                🎉 Parabéns  ${item.nome} - ⭐ ${item.pontos}/${item.total} <br>
+                🕒 ${item.data}
+            </p>
+        `;
+    });
+}
 function reiniciarJogo() {
     pontuacao = 0;
     atual = 0;
@@ -165,16 +248,42 @@ function reiniciarJogo() {
 
     perguntasSelecionadas = perguntas.sort(() => Math.random() - 0.5);
 
+    // 🔥 ESCONDE TELA FINAL
     document.getElementById("overlayFinal").style.display = "none";
 
+    // 🔥 MOSTRA O QUIZ DE NOVO
+    document.getElementById("quiz").style.display = "flex";
+
     atualizarEstrela();
-    carregarPergunta();
+
+    carregarPergunta(); // 🔥 reinicia o jogo
+}
+function verHistorico() {
+    let historico = JSON.parse(localStorage.getItem("historico")) || [];
+
+    let box = document.getElementById("historicoBox");
+    let conteudo = document.getElementById("historicoConteudo");
+
+    box.style.display = "flex";
+
+    if (historico.length === 0) {
+        conteudo.innerHTML = "Sem histórico ainda.";
+        return;
+    }
+
+    conteudo.innerHTML = "";
+
+    historico.slice().reverse().forEach(item => {
+        conteudo.innerHTML += `
+            <div style="background:white; color:black; padding:10px; margin:10px 0; border-radius:10px;">
+                🎉 ${item.nome}<br>
+                ⭐ ${item.pontos}/${item.total}<br>
+                🕒 ${item.data}
+            </div>
+        `;
+    });
+}
+function fecharHistorico() {
+    document.getElementById("historicoBox").style.display = "none";
 }
 
-// ⏸️ PAUSE
-function pausarJogo() {
-    pausado = !pausado;
-}
-
-// 🚀 INICIAR
-carregarPergunta();

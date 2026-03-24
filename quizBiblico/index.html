@@ -3,28 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz</title>
+        <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5DQECCJMQ3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5DQECCJMQ3');
+</script>
+    
+    <title>Quiz Bíblico</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="imagem/logo.ai" type="image/x-icon">
 </head>
 <body>
 
-<section id="quiz">
-<div class="topo">
-    <span id="tempo">⏱️ 30</span>
-            <p id="pontuacao">⭐ 0</p>
+<div id="telaInicial">
+    <h1>📖 Quiz Bíblico</h1>
+   
+    <input type="text" id="nomeJogador" placeholder="Digite seu nome">
 
-    <div id="barraTempo">
-        <div id="progressoTempo"></div>
-    </div>
-
-    <div class="controles">
-        <button class="btn-controle" onclick="pausarJogo()">⏸</button>
-        <button class="btn-controle" onclick="reiniciarJogo()">🔄</button>
-    </div>
+    <button onclick="iniciarJogo()">▶️ Jogar</button>
+    <button onclick="mostrarSobre()">ℹ️ Sobre</button>
+    <button onclick="verHistorico()">📜 Histórico</button>
 </div>
 
+<!-- 🔥 AGORA FORA -->
+<div id="historicoBox">
 
+    <button onclick="fecharHistorico()">⬅️ Voltar</button>
 
+    <h2>📜 Histórico</h2>
+
+    <div id="historicoConteudo"></div>
+
+</div>
+
+<section id="quiz">
+    <div class="topo">
+        <span id="tempo">⏱️ 30</span>
+        <p id="pontuacao">⭐ 0</p>
+
+        <div id="barraTempo">
+            <div id="progressoTempo"></div>
+        </div>
+
+        <div class="controles">
+            <button class="btn-controle" onclick="pausarJogo()">⏸</button>
+            <button class="btn-controle" onclick="reiniciarJogo()">🔄</button>
+        </div>
+    </div>
 
     <div class="container">
         <h2 id="pergunta">Pergunta Aqui</h2>
@@ -36,16 +65,17 @@
 
         <p id="resultado"></p>
     </div>
-    <div id="overlayFinal">
-    <div class="cardFinal">
-        <h2>🏆 Resultado</h2>
-        <p id="pontuacaoFinal">0</p>
-        <button onclick="reiniciarJogo()">🔄 Tentar novamente</button>
-    </div>
-</div>
 
+    <div id="overlayFinal">
+        <div class="cardFinal">
+            <h2>🏆 Resultado</h2>
+            <p id="pontuacaoFinal">0</p>
+            <button onclick="reiniciarJogo()">🔄 Tentar novamente</button>
+        </div>
+    </div>
 </section>
 
 <script src="app.js"></script>
 </body>
+
 </html>🏆
