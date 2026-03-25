@@ -13,9 +13,9 @@
   gtag('config', 'G-5DQECCJMQ3');
 </script>
     
-    <title>Quiz Bíblico</title>
+    <title>ICEI Bíblico</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="imagem/logo.ai" type="image/x-icon">
+    <link rel="shortcut icon" href="imagem/telaInicial-logo.png" type="image/x-icon">
 </head>
 <body>
 
@@ -24,8 +24,8 @@
    
     <input type="text" id="nomeJogador" placeholder="Digite seu nome">
 
-    <button onclick="iniciarJogo()">▶️ Jogar</button>
-    <button onclick="mostrarSobre()">ℹ️ Sobre</button>
+    <button id="btnIniciar" onclick="iniciarJogo()">▶️ Jogar</button>
+    <button id="btnSobre" onclick="mostrarSobre()">ℹ️ Sobre</button>
     <button onclick="verHistorico()">📜 Histórico</button>
 </div>
 
@@ -73,9 +73,14 @@
             <button onclick="reiniciarJogo()">🔄 Tentar novamente</button>
         </div>
     </div>
+    <div id="sobreBox" style="display:none;">
+    <p>📖 Quiz Bíblico<br>Desenvolvedor: Daniscarline</p>
+    <button onclick="fecharSobre()">Fechar</button>
+</div>
+
 </section>
 
 <script src="app.js"></script>
 </body>
 
-</html>🏆
+</html>
