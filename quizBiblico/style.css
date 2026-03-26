@@ -82,6 +82,7 @@ body {
     transform: scale(1.2);
 }
 
+
 /* PERGUNTA */
 #pergunta {
     height: 20%;
@@ -382,3 +383,19 @@ button {
     font-style: italic;
 
 }
+#btnConfig {
+    position: absolute;
+    top: -8px;
+    right: -60px;
+    font-size:80px;
+
+    background-color: transparent !important; /* 🔥 força transparente */
+    border: none;
+    outline: none; /* remove borda azul ao clicar */
+    box-shadow: none; /* remove sombra */
+    width: auto;
+    height: auto;
+    cursor: pointer;
+}
+
+

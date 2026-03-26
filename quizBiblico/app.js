@@ -327,4 +327,19 @@ function trocarNome() {
     localStorage.removeItem("nomeJogador");
     location.reload();
 }
+function sairJogo() {
+    // Esconde o quiz
+    document.getElementById("quiz").style.display = "none";
+
+    // Mostra a tela inicial
+    document.getElementById("telaInicial").style.display = "flex";
+
+    // Para a música
+    musicaFundo.pause();
+    musicaFundo.currentTime = 0;
+
+    // Reset básico
+    pontuacao = 0;
+    atual = 0;
+}
 
