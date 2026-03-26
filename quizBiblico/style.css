@@ -60,6 +60,7 @@ body {
     width: 100%;
     background: lime;
     transition: width 1s linear;
+    margin: 0;
 }
 
 /* BOTÕES DIREITA */
