@@ -9,7 +9,7 @@ const perguntas = [
         { pergunta: "Quanto é 2+3?", opcoes: ["3", "4", "5", "0"], correta:2 },
                 { pergunta: "Quanto é 3+3?", opcoes: ["3", "4", "6", "0"], correta:2 }
 ];
-const TOTAL_PERGUNTAS= 2
+const TOTAL_PERGUNTAS= 4
 
 const somAcerto = new Audio("acerto.mp3");
 const somErro = new Audio("erro.mp3");
@@ -296,11 +296,11 @@ function verHistorico() {
     });
 }
 
-
 function reiniciarJogo() {
     pontuacao = 0;
     atual = 0;
     tempo = 30;
+    vidas = 3;
 
 perguntasSelecionadas = [...perguntas]
     .sort(() => Math.random() - 0.5)
@@ -316,33 +316,6 @@ perguntasSelecionadas = [...perguntas]
 
     carregarPergunta(); // 🔥 reinicia o jogo
 }
-function verHistorico() {
-    let historico = JSON.parse(localStorage.getItem("historico")) || [];
-
-    let box = document.getElementById("historicoBox");
-    let conteudo = document.getElementById("historicoConteudo");
-
-    box.style.display = "flex";
-
-    if (historico.length === 0) {
-        conteudo.innerHTML = "Sem ranking ainda.";
-        return;
-    }
-
-    conteudo.innerHTML = "<h3>🏆 TOP 5</h3>";
-
-    // 🔥 AQUI ENTRA O CÓDIGO DAS MEDALHAS
-    let medalhas = ["🥇", "🥈", "🥉", "🏅", "🏅"];
-
-    historico.forEach((item, i) => {
-        conteudo.innerHTML += `
-            <div>
-                ${medalhas[i]} ${item.nome} ⭐ ${item.pontos}
-            </div>
-        `;
-    });
-}
-
 function fecharHistorico() {
     document.getElementById("historicoBox").style.display = "none";
 }
@@ -382,6 +355,7 @@ function sairJogo() {
     // Reset básico
     pontuacao = 0;
     atual = 0;
+    vidas= 3;
 }
 let somAtivo = true;
 
@@ -419,8 +393,10 @@ function toggleModoEscuro() {
 
     if (modoEscuro) {
         document.body.classList.add("dark-mode");
+        alert("Modo escuro Ativo.")
     } else {
         document.body.classList.remove("dark-mode");
+        alert("Modo escuro Desativado.")
     }
     if (localStorage.getItem("modoEscuro") === "true") {
     document.body.classList.add("dark-mode");
