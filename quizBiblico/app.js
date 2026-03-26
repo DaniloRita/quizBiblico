@@ -232,14 +232,6 @@ function pausarJogo() {
 }
 
 
-function mostrarSobre() {
-    document.getElementById("sobreBox").style.display = "block";
-}
-
-function fecharSobre() {
-    document.getElementById("sobreBox").style.display = "none";
-}
-
 function salvarHistorico() {
     let historico = JSON.parse(localStorage.getItem("historico")) || [];
 
