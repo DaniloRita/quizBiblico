@@ -26,7 +26,7 @@
    
     <input type="text" id="nomeJogador" placeholder="Digite seu nome">
 
-    <button id="btnIniciar" onclick="iniciarJogo()">▶️ Jogar</button>
+    <button id="btnIniciar" onclick="abrirNivel()">▶️ Jogar</button>
     <button id="btnSobre" onclick="mostrarSobre()">ℹ️ Sobre</button>
     <button onclick="verHistorico()">📜 Histórico</button>
 </div>
@@ -44,6 +44,7 @@
 
 <section id="quiz">
     <div class="topo">
+        <p id="vidas">❤️ 3</p>
         <span id="tempo">⏱️ 30</span>
         <p id="pontuacao">⭐ 0</p>
 
@@ -87,8 +88,23 @@
     <div class="boxConfig">
         <h2>⚙️ Configurações</h2>
 
-        <button onclick="toggleSom()">🔊 Som ON/OFF</button>
+        <label>🎵 Volume</label>
+        <input type="range" min="0" max="1" step="0.1" onchange="mudarVolume(this.value)">
+
+        <button onclick="toggleModoEscuro()">🌙 Modo Escuro</button>
+        <button onclick="resetarProgresso()">🔄 Resetar Progresso</button>
+        <button onclick="trocarNome()">👤 Trocar Nome</button>
+
         <button onclick="fecharConfig()">❌ Fechar</button>
+    </div>
+</div>
+<div id="menuNivel">
+    <div class="boxConfig">
+        <h2>🎮 Escolher Nível</h2>
+
+        <button onclick="escolherNivel('facil')">🟢 Fácil</button>
+        <button onclick="escolherNivel('medio')">🟡 Médio</button>
+        <button onclick="escolherNivel('dificil')">🔴 Difícil</button>
     </div>
 </div>
 

@@ -1,3 +1,5 @@
+let nivel = "facil";
+let vidas = 3;
 let nome = "";
 let nomeDefinido = false;
 
@@ -58,6 +60,10 @@ function carregarPergunta() {
         finalizarJogo();
         return;
     }
+    if (nivel === "facil") tempo = 30;
+    if (nivel === "medio") tempo = 20;
+    if (nivel === "dificil") tempo = 10;
+
 
     const p = perguntasSelecionadas[atual];
 
@@ -68,8 +74,11 @@ function carregarPergunta() {
     });
 
     document.getElementById("resultado").innerText = "";
-
-    tempo = 30;
+    //define tempo baseado no nível
+    if (nivel === "facil") tempo = 30;
+    if (nivel === "medio") tempo = 20;
+    if (nivel === "dificil") tempo = 10;
+    //atualiza na tela
     document.getElementById("tempo").innerText = "⏱️ " + tempo;
 
     document.getElementById("progressoTempo").style.width = "100%";
@@ -164,6 +173,17 @@ function atualizarPontuacao(acertou) {
             somErro.currentTime = 0;
         }, 3000);
     }
+    if (!acertou) {
+    vidas--;
+
+    document.getElementById("vidas").innerText = "❤️ " + vidas;
+
+    if (vidas <= 0) {
+        finalizarJogo();
+        return;
+    }
+    }
+
 
     atual++;
     clearInterval(intervalo);
@@ -363,4 +383,51 @@ function toggleSom() {
         alert("🔇 Som desligado");
     }
 }
+// 🎵 VOLUME
+function mudarVolume(valor) {
+    musicaFundo.volume = valor;
+}
+
+// 🌙 MODO ESCURO
+let modoEscuro = false;
+
+function toggleModoEscuro() {
+    modoEscuro = !modoEscuro;
+    localStorage.setItem("modoEscuro", modoEscuro);
+
+
+    if (modoEscuro) {
+        document.body.classList.add("dark-mode");
+    } else {
+        document.body.classList.remove("dark-mode");
+    }
+    if (localStorage.getItem("modoEscuro") === "true") {
+    document.body.classList.add("dark-mode");
+    }
+
+}
+
+// 🔄 RESETAR PROGRESSO
+function resetarProgresso() {
+    localStorage.clear();
+    alert("Progresso apagado!");
+}
+
+// 👤 TROCAR NOME
+function trocarNome() {
+    localStorage.removeItem("nomeJogador");
+    location.reload();
+}
+function abrirNivel() {
+    document.getElementById("menuNivel").style.display = "flex";
+}
+
+function escolherNivel(n) {
+    nivel = n;
+
+    document.getElementById("menuNivel").style.display = "none";
+
+    iniciarJogo(); // 🔥 só começa depois de escolher
+}
+
 
