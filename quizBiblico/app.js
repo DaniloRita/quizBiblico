@@ -110,8 +110,9 @@ function iniciarTempo() {
 
         if (tempo <= 0) {
             clearInterval(intervalo);
-            atualizarPontuacao(false);
+            finalizarJogo(); // 🔥 termina o jogo
         }
+
     }, 1000);
 }
 
@@ -200,8 +201,9 @@ function atualizarPontuacao(acertou) {
 // 🏁 FINAL
 function finalizarJogo() {
     clearInterval(intervalo);
+    
+    salvarRankingOnline(); // ✅
 
-    salvarHistorico(); // 🔥 salva aqui
 
     document.getElementById("overlayFinal").style.display = "flex";
 
@@ -237,8 +239,7 @@ function iniciarJogo() {
 
 
 // ⏸️ PAUSE
-function pausarJogo() {
-    const btn = document.getElementById("btnPause");
+function pausarJogo() {    const btn = document.getElementById("btnPause");
 
     pausado = !pausado;
 
@@ -251,42 +252,51 @@ function pausarJogo() {
     }
 }
 
-
 function salvarHistorico() {
     let historico = JSON.parse(localStorage.getItem("historico")) || [];
 
     historico.push({
         nome: nome,
-        pontos: pontuacao,
-        total: perguntasSelecionadas.length,
-        data: new Date().toLocaleString()
+        pontos: pontuacao
     });
+
+    // 🔥 ordena do maior para o menor
+    historico.sort((a, b) => b.pontos - a.pontos);
+
+    // 🔥 mantém só os 5 melhores
+    historico = historico.slice(0, 5);
 
     localStorage.setItem("historico", JSON.stringify(historico));
 }
+
 
 function verHistorico() {
     let historico = JSON.parse(localStorage.getItem("historico")) || [];
 
     let box = document.getElementById("historicoBox");
-    box.style.display = "block";
+    let conteudo = document.getElementById("historicoConteudo");
+
+    box.style.display = "flex";
 
     if (historico.length === 0) {
-        box.innerHTML = "Sem histórico ainda.";
+        conteudo.innerHTML = "Sem ranking ainda.";
         return;
     }
 
-    box.innerHTML = "<h3>Histórico</h3>";
+    conteudo.innerHTML = "<h3>🏆 TOP 5</h3>";
 
-    historico.reverse().forEach(item => {
-        box.innerHTML += `
-            <p>
-                🎉 Parabéns  ${item.nome} - ⭐ ${item.pontos}/${item.total} <br>
-                🕒 ${item.data}
-            </p>
+    let medalhas = ["🥇", "🥈", "🥉", "🏅", "🏅"];
+
+    historico.forEach((item, i) => {
+        conteudo.innerHTML += `
+            <div>
+                ${medalhas[i]} ${item.nome} ⭐ ${item.pontos}
+            </div>
         `;
     });
 }
+
+
 function reiniciarJogo() {
     pontuacao = 0;
     atual = 0;
@@ -315,25 +325,36 @@ function verHistorico() {
     box.style.display = "flex";
 
     if (historico.length === 0) {
-        conteudo.innerHTML = "Sem histórico ainda.";
+        conteudo.innerHTML = "Sem ranking ainda.";
         return;
     }
 
-    conteudo.innerHTML = "";
+    conteudo.innerHTML = "<h3>🏆 TOP 5</h3>";
 
-    historico.slice().reverse().forEach(item => {
+    // 🔥 AQUI ENTRA O CÓDIGO DAS MEDALHAS
+    let medalhas = ["🥇", "🥈", "🥉", "🏅", "🏅"];
+
+    historico.forEach((item, i) => {
         conteudo.innerHTML += `
-            <div style="background:white; color:black; padding:10px; margin:10px 0; border-radius:10px;">
-                🎉 ${item.nome}<br>
-                ⭐ ${item.pontos}/${item.total}<br>
-                🕒 ${item.data}
+            <div>
+                ${medalhas[i]} ${item.nome} ⭐ ${item.pontos}
             </div>
         `;
     });
 }
+
 function fecharHistorico() {
     document.getElementById("historicoBox").style.display = "none";
 }
+
+// 🔥 COLOCA AQUI
+async function salvarRankingOnline() {
+    await addDoc(collection(db, "ranking"), {
+        nome: nome,
+        pontos: pontuacao
+    });
+}
+
 window.onload = function () {
     let nomeSalvo = localStorage.getItem("nomeJogador");
 
@@ -428,6 +449,9 @@ function escolherNivel(n) {
     document.getElementById("menuNivel").style.display = "none";
 
     iniciarJogo(); // 🔥 só começa depois de escolher
+}
+function finalizarJogo() {
+    salvarHistorico();
 }
 
 
