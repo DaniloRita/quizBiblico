@@ -342,4 +342,25 @@ function sairJogo() {
     pontuacao = 0;
     atual = 0;
 }
+let somAtivo = true;
+
+function abrirConfiguracoes() {
+    document.getElementById("menuConfig").style.display = "flex";
+}
+
+function fecharConfig() {
+    document.getElementById("menuConfig").style.display = "none";
+}
+
+function toggleSom() {
+    somAtivo = !somAtivo;
+
+    if (somAtivo) {
+        musicaFundo.volume = 0.3;
+        alert("🔊 Som ativado");
+    } else {
+        musicaFundo.volume = 0;
+        alert("🔇 Som desligado");
+    }
+}
 

@@ -285,7 +285,7 @@ button {
 /* 🔥 garante que o conteúdo fique acima */
 #telaInicial * {
     position: relative;
-    z-index: 1;
+    z-index: 2;
 }
 
 #telaInicial h1 {
@@ -385,17 +385,48 @@ button {
 }
 #btnConfig {
     position: absolute;
-    top: -8px;
-    right: -60px;
-    font-size:80px;
+    top: 0px;
+    right: 0px;
 
-    background-color: transparent !important; /* 🔥 força transparente */
+    font-size: 40px !important; /* 🔥 força o tamanho */
+    
+    width: auto !important;     /* 🔥 remove limite */
+    padding: 0 !important;      /* 🔥 remove espaço interno */
+
+    background-color: transparent !important;
     border: none;
-    outline: none; /* remove borda azul ao clicar */
-    box-shadow: none; /* remove sombra */
-    width: auto;
-    height: auto;
+    outline: none;
+    box-shadow: none;
+
     cursor: pointer;
+    z-index: 2;
+}
+#menuConfig {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0,0,0,0.7);
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
 }
 
+.boxConfig {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    color: black;
+}
+
+.boxConfig button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+}
 
