@@ -450,8 +450,4 @@ function escolherNivel(n) {
 
     iniciarJogo(); // 🔥 só começa depois de escolher
 }
-function finalizarJogo() {
-    salvarHistorico();
-}
-
 
