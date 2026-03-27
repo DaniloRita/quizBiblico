@@ -10,9 +10,13 @@ const perguntas = [
                 { pergunta: "Quanto é 3+3?", opcoes: ["3", "4", "6", "0"], correta:2 }
 ];
 const TOTAL_PERGUNTAS= 4
-
-const somAcerto = new Audio("acerto.mp3");
-const somErro = new Audio("erro.mp3");
+const somClick = new Audio("musica/toc.mp3");
+const somTempo = new Audio("musica/tempo.mp3");
+somTempo.loop = true; // 🔁 fica repetindo
+const somVitoria = new Audio("musica/vitoria.mp3");
+const somDerrota = new Audio("musica/lose.mp3");
+const somAcerto = new Audio("musica/acerto.mp3");
+const somErro = new Audio("musica/errado.mp3");
 const musicaFundo = new Audio("musica/fundo.mp3");
 musicaFundo.addEventListener("timeupdate", () => {
     if (musicaFundo.currentTime >= 31) {
@@ -23,7 +27,7 @@ musicaFundo.addEventListener("timeupdate", () => {
 
 
 musicaFundo.loop = true;
-musicaFundo.volume = 0.3;
+musicaFundo.volume = 0.2;
 let perguntasSelecionadas = [...perguntas]
     .sort(() => Math.random() - 0.5)
     .slice(0, TOTAL_PERGUNTAS);
@@ -60,6 +64,13 @@ function carregarPergunta() {
         finalizarJogo();
         return;
     }
+        // 🔇 PARA QUALQUER SOM ANTES
+    somTempo.pause();
+    somTempo.currentTime = 0;
+
+    // 🔊 COMEÇA NOVO SOM
+    somTempo.play();
+
     if (nivel === "facil") tempo = 30;
     if (nivel === "medio") tempo = 20;
     if (nivel === "dificil") tempo = 10;
@@ -90,6 +101,7 @@ function carregarPergunta() {
 
     clearInterval(intervalo);
     iniciarTempo();
+
 }
 
 // ⏱️ TEMPO
@@ -106,11 +118,29 @@ function iniciarTempo() {
 
         if (tempo <= 10) {
             document.getElementById("progressoTempo").style.background = "red";
+                somTempo.playbackRate = 1.5; // mais rápido 😱
         }
 
         if (tempo <= 0) {
             clearInterval(intervalo);
-            finalizarJogo(); // 🔥 termina o jogo
+
+            // 🔇 PARA SOM DO TEMPO
+            somTempo.pause();
+            somTempo.currentTime = 0;
+
+            vidas--; // 🔥 perde vida
+            document.getElementById("vidas").innerText = "❤️ " + vidas;
+
+            if (vidas <= 0) {
+                finalizarJogo(); // só termina se acabar vidas
+                return;
+            }
+
+            atual++; // 🔥 vai pra próxima pergunta
+
+            setTimeout(() => {
+                carregarPergunta();
+            }, 500);
         }
 
     }, 1000);
@@ -119,6 +149,9 @@ function iniciarTempo() {
 // 🎮 RESPONDER
 function responder(opcao) {
     const correta = perguntasSelecionadas[atual].correta;
+
+    somTempo.pause();
+    somTempo.currentTime = 0;
 
     for (let i = 0; i < 4; i++) {
         document.getElementById("op" + i).disabled = true;
@@ -201,18 +234,39 @@ function atualizarPontuacao(acertou) {
 // 🏁 FINAL
 function finalizarJogo() {
     clearInterval(intervalo);
-    
-    salvarRankingOnline(); // ✅
 
+    // 🔇 para música de fundo
+    musicaFundo.pause();
+    musicaFundo.currentTime = 0;
+
+    // 🔇 para som do tempo
+    somTempo.pause();
+    somTempo.currentTime = 0;
+
+    // 🎯 toca som correto
+    if (vidas <= 0) {
+        somDerrota.currentTime = 0;
+        somDerrota.play();
+    } else {
+        somVitoria.currentTime = 0;
+        somVitoria.play();
+    }
+
+    salvarRankingOnline();
 
     document.getElementById("overlayFinal").style.display = "flex";
 
-document.getElementById("pontuacaoFinal").innerText ="Parabéns " + nome + ",\n  ganhaste ⭐ " + pontuacao + " / " + perguntasSelecionadas.length;
-
+    document.getElementById("pontuacaoFinal").innerText =
+        "Parabéns " + nome + ",\n ganhaste ⭐ " + pontuacao + " / " + perguntasSelecionadas.length;
 }
+
 
 // 🔄 REINICIAR
 function iniciarJogo() {
+            // 🔊 toca som de clique
+    somClick.currentTime = 0;
+    somClick.play();
+
     let nomeSalvo = localStorage.getItem("nomeJogador");
 
     // 🔥 Se já existe nome guardado, usa direto
@@ -295,27 +349,26 @@ function verHistorico() {
         `;
     });
 }
-
 function reiniciarJogo() {
     pontuacao = 0;
     atual = 0;
     tempo = 30;
     vidas = 3;
 
-perguntasSelecionadas = [...perguntas]
-    .sort(() => Math.random() - 0.5)
-    .slice(0, TOTAL_PERGUNTAS);
+    document.getElementById("vidas").innerText = "❤️ " + vidas; // 🔥 FALTAVA ISSO
 
-    // 🔥 ESCONDE TELA FINAL
+    perguntasSelecionadas = [...perguntas]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, TOTAL_PERGUNTAS);
+
     document.getElementById("overlayFinal").style.display = "none";
-
-    // 🔥 MOSTRA O QUIZ DE NOVO
     document.getElementById("quiz").style.display = "flex";
 
-    atualizarEstrela(true);// ou false, só pra n~~ao quebrar
+    atualizarEstrela(true);
 
-    carregarPergunta(); // 🔥 reinicia o jogo
+    carregarPergunta();
 }
+
 function fecharHistorico() {
     document.getElementById("historicoBox").style.display = "none";
 }
@@ -420,6 +473,9 @@ function abrirNivel() {
 }
 
 function escolherNivel(n) {
+        // 🔊 toca som de clique
+    somClick.currentTime = 0;
+    somClick.play();
     nivel = n;
 
     document.getElementById("menuNivel").style.display = "none";
@@ -429,4 +485,12 @@ function escolherNivel(n) {
 function saberMais(){
     alert("O jogo surgiu por causa do estudo de Obreiros Aprovados, na qual aprendemos muito sobre a vida de Jesus então decidi transformar isso em apk para celular.")
 }
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+        musicaFundo.pause(); // 🔇 pausa quando sai do site
+    } else {
+        musicaFundo.play(); // 🔊 volta quando retorna
+    }
+});
+
 
