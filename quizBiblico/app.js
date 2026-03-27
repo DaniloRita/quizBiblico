@@ -13,7 +13,7 @@ const TOTAL_PERGUNTAS= 4
 const somClick = new Audio("musica/toc.mp3");
 const somTempo = new Audio("musica/tempo.mp3");
 somTempo.loop = true; // 🔁 fica repetindo
-const somVitoria = new Audio("musica/vitoria.mp3");
+const somVitoria = new Audio("musica/victoria.mp3");
 const somDerrota = new Audio("musica/lose.mp3");
 const somAcerto = new Audio("musica/acerto.mp3");
 const somErro = new Audio("musica/errado.mp3");
@@ -235,21 +235,26 @@ function atualizarPontuacao(acertou) {
 function finalizarJogo() {
     clearInterval(intervalo);
 
-    // 🔇 para música de fundo
+    // 🔇 parar todos os sons
     musicaFundo.pause();
     musicaFundo.currentTime = 0;
 
-    // 🔇 para som do tempo
     somTempo.pause();
     somTempo.currentTime = 0;
 
-    // 🎯 toca som correto
+    somAcerto.pause();
+    somAcerto.currentTime = 0;
+
+    somErro.pause();
+    somErro.currentTime = 0;
+
+    // 🎯 tocar som correto
     if (vidas <= 0) {
         somDerrota.currentTime = 0;
-        somDerrota.play();
+        somDerrota.play().catch(e => console.log(e));
     } else {
         somVitoria.currentTime = 0;
-        somVitoria.play();
+        somVitoria.play().catch(e => console.log(e));
     }
 
     salvarRankingOnline();
