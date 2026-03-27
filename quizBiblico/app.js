@@ -426,4 +426,7 @@ function escolherNivel(n) {
 
     iniciarJogo(); // 🔥 só começa depois de escolher
 }
+function saberMais(){
+    alert("O jogo surgiu por causa do estudo de Obreiros Aprovados, na qual aprendemos muito sobre a vida de Jesus então decidi transformar isso em apk para celular.")
+}
 
