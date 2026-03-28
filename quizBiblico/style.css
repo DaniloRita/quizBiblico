@@ -16,24 +16,21 @@ body {
 /* estrutura do quiz */
 #quiz {
     position: fixed;
-    width: 100%;
-    height: 100dvh;
     top: 0;
     left: 0;
+    right: 0;   /* 🔥 garante largura total */
+    bottom: 0;  /* 🔥 garante altura total */
 
     background: rgba(7, 3, 0, 0.731);
     backdrop-filter: blur(10px);
 
     padding: 20px;
-    box-sizing: border-box; /* 🔥 ISSO RESOLVE */
-
-    color: rgb(247, 237, 237);
-
+    box-sizing: border-box;
+    color: white;
     display: none;
     flex-direction: column;
     justify-content: center;
 }
-
 
 /* TOPO */
 .topo {
@@ -211,8 +208,6 @@ button {
 /* 🔥 RESPONSIVIDADE */
 @media (max-width: 768px) {
     #quiz {
-        width: 95%;
-        height: 95vh;
         padding: 10px;
     }
 
