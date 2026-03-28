@@ -1,3 +1,6 @@
+import { getDocs, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+let jogoFinalizado = false;
+
 let nivel = "facil";
 let vidas = 3;
 let nome = "";
@@ -148,6 +151,7 @@ function iniciarTempo() {
 
 // 🎮 RESPONDER
 function responder(opcao) {
+    if(pausado)return;
     const correta = perguntasSelecionadas[atual].correta;
 
     somTempo.pause();
@@ -232,39 +236,66 @@ function atualizarPontuacao(acertou) {
 }
 
 // 🏁 FINAL
-function finalizarJogo() {
+async function finalizarJogo() {
+    if (jogoFinalizado) return;
+    jogoFinalizado = true;
+
     clearInterval(intervalo);
 
-    // 🔇 parar todos os sons
     musicaFundo.pause();
     musicaFundo.currentTime = 0;
 
     somTempo.pause();
     somTempo.currentTime = 0;
 
-    somAcerto.pause();
-    somAcerto.currentTime = 0;
-
-    somErro.pause();
-    somErro.currentTime = 0;
-
-    // 🎯 tocar som correto
-    if (vidas <= 0) {
-        somDerrota.currentTime = 0;
-        somDerrota.play().catch(e => console.log(e));
-    } else {
-        somVitoria.currentTime = 0;
-        somVitoria.play().catch(e => console.log(e));
-    }
-
-    salvarRankingOnline();
-
-    document.getElementById("overlayFinal").style.display = "flex";
+    // 🔥 MOSTRA RESULTADO IMEDIATO (SEM FIREBASE)
+    const overlay = document.getElementById("overlayFinal");
+    overlay.style.display = "flex";
 
     document.getElementById("pontuacaoFinal").innerText =
-        "Parabéns " + nome + ",\n ganhaste ⭐ " + pontuacao + " / " + perguntasSelecionadas.length;
+        "Parabéns " + nome +
+        "\n⭐ Pontos: " + pontuacao +
+        "\n🏆 Posição Global: carregando...";
+
+    // 🔥 FIREBASE RODA DEPOIS (SEM TRAVAR O JOGO)
+    try {
+        if (window.db) {
+            await salvarRankingOnline();
+            let posicao = await obterPosicaoOnline();
+
+            document.getElementById("pontuacaoFinal").innerText =
+                "Parabéns " + nome +
+                "\n⭐ Pontos: " + pontuacao +
+                "\n🏆 Posição Global: #" + posicao;
+        }
+    } catch (e) {
+        console.log("Erro no ranking:", e);
+
+        document.getElementById("pontuacaoFinal").innerText =
+            "Parabéns " + nome +
+            "\n⭐ Pontos: " + pontuacao +
+            "\n⚠️ Ranking indisponível";
+    }
 }
 
+// 🔥 COLOCA AQUI
+async function obterPosicaoOnline() {
+    if (!window.db) return "-"; // 🔥 evita travar
+
+    const querySnapshot = await getDocs(collection(window.db, "ranking"));
+
+    let lista = [];
+
+    querySnapshot.forEach((doc) => {
+        lista.push(doc.data());
+    });
+
+    lista.sort((a, b) => b.pontos - a.pontos);
+
+    let posicao = lista.findIndex(item => item.nome === nome);
+
+    return posicao !== -1 ? posicao + 1 : "-";
+}
 
 // 🔄 REINICIAR
 function iniciarJogo() {
@@ -306,10 +337,19 @@ function pausarJogo() {    const btn = document.getElementById("btnPause");
         musicaFundo.pause();
         somTempo.pause();
         btn.innerText = "▶️";
+           // 🔒 BLOQUEIA BOTÕES
+        for (let i = 0; i < 4; i++) {
+            document.getElementById("op" + i).disabled = true;
+        }
+     
     } else {
         musicaFundo.play();
         somTempo.play();
         btn.innerText = "⏸";
+                // 🔓 LIBERA BOTÕES
+        for (let i = 0; i < 4; i++) {
+            document.getElementById("op" + i).disabled = false;
+        }
     }
 }
 
@@ -372,6 +412,8 @@ function reiniciarJogo() {
     document.getElementById("quiz").style.display = "flex";
 
     atualizarEstrela(true);
+    jogoFinalizado = false;
+
 
     carregarPergunta();
 }
@@ -382,11 +424,14 @@ function fecharHistorico() {
 
 // 🔥 COLOCA AQUI
 async function salvarRankingOnline() {
-    await addDoc(collection(db, "ranking"), {
+    if (!window.db) return; // 🔥 evita travar
+
+    await addDoc(collection(window.db, "ranking"), {
         nome: nome,
         pontos: pontuacao
     });
 }
+
 
 window.onload = function () {
     let nomeSalvo = localStorage.getItem("nomeJogador");
@@ -470,13 +515,10 @@ function resetarProgresso() {
     alert("Progresso apagado!");
 }
 
-// 👤 TROCAR NOME
-function trocarNome() {
-    localStorage.removeItem("nomeJogador");
-    location.reload();
-}
+
 function abrirNivel() {
     document.getElementById("menuNivel").style.display = "flex";
+    
 }
 
 function escolherNivel(n) {
@@ -500,4 +542,18 @@ document.addEventListener("visibilitychange", () => {
     }
 });
 
+window.abrirNivel = abrirNivel;
+window.verHistorico = verHistorico;
+window.fecharHistorico = fecharHistorico;
+window.responder = responder;
+window.pausarJogo = pausarJogo;
+window.reiniciarJogo = reiniciarJogo;
+window.sairJogo = sairJogo;
+window.escolherNivel = escolherNivel;
+window.abrirConfiguracoes = abrirConfiguracoes;
+window.fecharConfig = fecharConfig;
+window.toggleModoEscuro = toggleModoEscuro;
+window.resetarProgresso = resetarProgresso;
+window.trocarNome = trocarNome;
+window.saberMais = saberMais;
 
