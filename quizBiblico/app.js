@@ -304,9 +304,11 @@ function pausarJogo() {    const btn = document.getElementById("btnPause");
 
     if (pausado) {
         musicaFundo.pause();
+        somTempo.pause();
         btn.innerText = "▶️";
     } else {
         musicaFundo.play();
+        somTempo.play();
         btn.innerText = "⏸";
     }
 }
