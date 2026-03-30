@@ -1,10 +1,27 @@
+
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+const auth = getAuth();
+const provider = new GoogleAuthProvider();
+
+
 import { getDocs, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 let jogoFinalizado = false;
+let totalPerguntasDesafio = 10;
 
 let nivel = "facil";
 let vidas = 3;
+let modoDesafio = false;
 let nome = "";
 let nomeDefinido = false;
+window.onload = function () {
+    const nomeSalvo = localStorage.getItem("nomeJogador");
+
+    if (nomeSalvo) {
+        document.getElementById("nomeJogador").value = nomeSalvo;
+        nome = nomeSalvo;
+    }
+};
+
 
 const perguntas = [
     { 
@@ -346,10 +363,14 @@ function atualizarEstrela(acertou = true) {
 
 // 📌 CARREGAR PERGUNTA
 function carregarPergunta() {
-    if (atual >= perguntasSelecionadas.length) {
-        finalizarJogo();
-        return;
-    }
+if (
+    (modoDesafio && atual >= totalPerguntasDesafio) ||
+    (!modoDesafio && atual >= perguntasSelecionadas.length)
+) {
+    finalizarJogo();
+    return;
+}
+
         // 🔇 PARA QUALQUER SOM ANTES
     somTempo.pause();
     somTempo.currentTime = 0;
@@ -455,6 +476,14 @@ function responder(opcao) {
     }
 
     const acertou = opcao === correta;
+        // 🔥 AQUI É O LUGAR CERTO
+    if (!acertou) {
+        if (modoDesafio) {
+            finalizarJogo(); // perde na hora
+            return;
+        }
+        vidas--;
+    }
 
     setTimeout(() => {
         for (let i = 0; i < 4; i++) {
@@ -494,16 +523,7 @@ function atualizarPontuacao(acertou) {
             somErro.currentTime = 0;
         }, 3000);
     }
-    if (!acertou) {
-    vidas--;
 
-    document.getElementById("vidas").innerText = "❤️ " + vidas;
-
-    if (vidas <= 0) {
-        finalizarJogo();
-        return;
-    }
-    }
 
 
     atual++;
@@ -534,7 +554,8 @@ async function finalizarJogo() {
     // 🔥 TOCAR SOM CERTO
     if (vidas > 0) {
         somVitoria.currentTime = 0;
-        somVitoria.play();
+somVitoria.play().catch(e => console.log("Erro ao tocar som:", e));
+
     } else {
         somDerrota.currentTime = 0;
         somDerrota.play();
@@ -775,9 +796,22 @@ window.onload = function () {
     }
 };
 function trocarNome() {
-    localStorage.removeItem("nomeJogador");
-    location.reload();
+    let novoNome = prompt("Digite seu novo nome:");
+
+    if (novoNome) {
+        nome = novoNome;
+
+        localStorage.setItem("nomeJogador", novoNome);
+
+        document.getElementById("nomeJogador").value = novoNome;
+    }
+    if (!nome) {
+    alert("Digite seu nome!");
+    return;
 }
+
+}
+
 function sairJogo() {
     // Esconde o quiz
     document.getElementById("quiz").style.display = "none";
@@ -847,10 +881,22 @@ function resetarProgresso() {
     alert("Progresso apagado!");
 }
 
-
 function abrirNivel() {
+    nome = document.getElementById("nomeJogador").value;
+
+    // 🔥 SALVA NO NAVEGADOR
+    localStorage.setItem("nomeJogador", nome);
+
     document.getElementById("menuNivel").style.display = "flex";
-    
+}
+function iniciarDesafio() {
+    modoDesafio = true;
+    vidas = 1;
+    pontuacao = 0;
+    atual = 0;
+    console.log("Modo desafio ativado"); // teste
+
+    iniciarJogo(); // usa tua função que começa o jogo
 }
 
 function escolherNivel(n) {
@@ -873,6 +919,25 @@ document.addEventListener("visibilitychange", () => {
         musicaFundo.play(); // 🔊 volta quando retorna
     }
 });
+async function loginGoogle() {
+    try {
+        const result = await signInWithPopup(auth, provider);
+
+        const user = result.user;
+
+        nome = user.displayName;
+
+        document.getElementById("nomeJogador").value = nome;
+
+        alert("Logado como " + nome);
+
+    } catch (e) {
+        console.log(e);
+        alert("Erro no login");
+    }
+}
+
+
 
 window.abrirNivel = abrirNivel;
 window.verHistorico = verHistorico;
