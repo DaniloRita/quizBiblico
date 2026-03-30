@@ -7,11 +7,294 @@ let nome = "";
 let nomeDefinido = false;
 
 const perguntas = [
-    { pergunta: "Qual é a Capital de Angola?", opcoes: ["Luanda", "Benguela", "Huambo", "Lobito"], correta: 0 },
-    { pergunta: "Quanto é 2+2?", opcoes: ["3", "4", "6", "0"], correta: 1 },
-        { pergunta: "Quanto é 2+3?", opcoes: ["3", "4", "5", "0"], correta:2 },
-                { pergunta: "Quanto é 3+3?", opcoes: ["3", "4", "6", "0"], correta:2 }
+    { 
+        pergunta: "Como se chamava o país onde Jesus vivia?", opcoes: ["Palestina", "Belém", "Nazaré", "Cafarnaum"], correta: 0 
+    },
+    { 
+        pergunta: "Qual a nacionalidade dos que nasceram na Palestina?", opcoes: ["Nazareno", "Judia", "Galileu", "Romano"], correta: 1 
+    
+    },
+    { 
+        pergunta: "Como se chama o grande mar que fica no centro do Império Romano?", opcoes: ["Mar Vermelho", "Mar Mediterrâneo", "Mar da Galileia", "Mar da Judéia"], correta:1 
+    },
+    {
+        pergunta: "Quantos quilômetros havia aproximadamente entre Roma e Palestina?", opcoes: ["1500", "2000", "2500", "3000"], correta:2 
+    },
+    {
+        pergunta:"Como se chamava a capital do Império Romano?",opcoes:["Judéia","Nazaré","Roma","Belém"],correta:2
+    },
+    {
+        pergunta:"Quantos anos antes  do descobrimento das Américas Jesus nasceu?",opcoes:["1490","1492","1590","1592"],correta:1},
+    {
+        pergunta:"Qual era o título do  Imperador Romano",opcoes:["Augusto","Herodes","O grande","César"],correta:3
+    },
+     {
+        pergunta:"Qual dos Dois  grupos políticos entre os judeus: odiava aos romanos?",opcoes:["Publicanos","Zelotes","Simão Pedro","Judas Iscariotes"],correta:1
+    },
+     {       
+        pergunta:"Qual dos Dois  grupos políticos entre os judeus: simpatizava e colaborava com os romanos?",opcoes:["Publicanos","Zelotes","Simão Pedro","Judas Iscariotes"],correta:0
+    },
+    {
+        pergunta:"Em que cidade vivia o Imperador Romano?",opcoes:["Palestina","Belém","Nazaré","Roma"],correta:3
+    },
+    {
+        pergunta:"Que era um publicano?",opcoes:["Zelador da pátria","Cobrador  dos impostos","Judeu revolucionário","Nenhuma das opções"],correta:1
+    },
+    {
+        pergunta:"Qual era a nacionalidade dos publicanos na Palestina?",opcoes:["Nazareno", "Romano", "Galileu", "Judia"],correta:3
+    },
+    {
+        pergunta:"Que era um zelote?",opcoes:["Zelador da pátria","Cobrador  dos impostos","Judeu revolucionário","Nenhuma das opções"],correta:2
+    },
+    {
+        pergunta:"Qual era a nacionalidade dos zelotes?",opcoes:["Nazareno", "Romano", "Galileu", "Judia"],correta:3
+    },
+    {
+        
+        pergunta:"Os publicanos e os zelotes eram?",opcoes:["Amigos","Vizinhos","Parentes","Inimigos"],correta:3
+    },//Não completo
+    {
+        pergunta:"Que método usavam os romanos para a pena de morte?",opcoes:["Prisão perpétua","Crucificação","...","...."],correta:1
+    },
+    {
+        pergunta:"Qual dos apóstolos de Cristo simpatizavam com o imperialismo?",opcoes:["Judas Iscariotes","Simão o Zelote","Mateus","Simão Pedro"],correta:2
+    },
+    {
+        pergunta:"Qual dos apóstolos de Cristo simpatizavam com o Nacionalismo?",opcoes:["Judas Iscariotes","Simão o Zelote","Mateus","Simão Pedro"],correta:1
+    },
+    {
+        pergunta:"Que ofício tinha Mateus depois de seguir a Cristo?",opcoes:["Ladrão","Apóstolo de Cristo","Cobrador dos impostos","Nenhuma das opçoes"],correta:1
+    },
+    {
+        pergunta:"Com que Império colaborou Mateus?", opcoes:["Nazareno","Romano","Judeu","Nenhuma das opções"],correta:1       
+    },
+    {
+        pergunta:"Simão o Zelote estava ...... imperialismo?", opcoes:["A favor do","De acordo com","Contra o","Nenhuma das opões"],correta:2
+    },
+    {
+        pergunta:"Qual é tema principal do Evangelho segundo Mateus?", opcoes:["Reino de Deus","Reinos dos Céus","Reino de Cristo","Reino de Jesus"],correta:1
+    },
+    {
+        pergunta:"Como se chama o autor do primeiro  Evagelho?", opcoes:["Genesis","Marcos","Mateus","Êxodo"],correta:2
+    },
+    {
+        pergunta:"Em que reino foram unidos Mateus e Simão o Zelote?", opcoes:["Reino de Deus","Reinos dos Céus","Reino de Cristo","Reino de Satanás"],correta:1
+    },
+    {
+        pergunta:"De que maneira o Reino dos Céus alcança os seus alvos?", opcoes:["Ódio","Vingança","violência","Amor"],correta:3
+    },
+    {
+        pergunta:"De que maneira os movimentos da revolução e Imperialismo alcança os seus alvos?", opcoes:["Honestidade","Pureza","violência","Amor"],correta:2
+    },
+    {
+        pergunta:"Quais são os três nomes bíblicos para o reino de Jesus?", opcoes:["Reino de Deus,de Cristo e de Jesus","Reinos dos Céus, de Jesus e de Cristo","Reino de Cristo,de Céus e Satanás","Nenhuma das opções"],correta:3
+    },
+    {
+        pergunta:"Qual era o Título em Hebraico do Rei esperado pelos Judeus?", opcoes:["Cristo","Jesus","Messias","O grande"],correta:2
+    },
+    {
+        pergunta:"Qual era o Título em Grego do Rei esperado pelos Judeus?", opcoes:["Cristo","Jesus","Messias","O grande"],correta:2
+    },
+    {
+        pergunta:"Quais são os três símbolos de um rei?", opcoes:["Coroa, Trono e vestuário","Calçados,Coroa e Cetro","Cetro, Trono e Coroa","Nenhuma das opções"],correta:2
+    },
+    {
+        pergunta:"Que tem que se fazer a um rei no princípio do seu reinado?", opcoes:["Chicotea-lo","Testa-lo","Aprisiona-lo","Ungi-lo"],correta:3
+    },
+    {// incompleto
+        pergunta:"Que quer dizer os nomes Messias e Cristo?", opcoes:["Ungido","Salvador","Santo","Nenhuma das opções"],correta:0
+    },
+    {
+        pergunta:"Qual é a passagem bíblica que nos ensina buscar primeiro o reino de Deus?", opcoes:["Mateus 5:14","Mateus 6:33","Mateus 10:24","Mateus 20:28"],correta:1
+    },
+    {
+        pergunta:"Qual é o  reino que sempre se opõe ao reino dos céus?", opcoes:["Reino de Satanás","Reino de Jesus","Reino de Deus","Nenhuma das opções"],correta:0
+    },
+    //PROVA 6 DE OBREIROS APROVADOS
+    {
+        pergunta:"Qual é a cidade onde morava Jesus durante o Ano de Popularidade?",opcoes:["Cafarnaum","Belém","Nazaré","Jerusalém"], correta:0
+    },
+        {
+        pergunta:"Qual é a cidade onde morava Jesus durante o Ano de Preparação?",opcoes:["Cafarnaum","Belém","Nazaré","Jerusalém"], correta:2
+    },
+    {
+        pergunta:"Qual é a cidadizinha onde Jesus nasceu?",opcoes:["Cafarnaum","Belém","Nazaré","Jerusalém"], correta:1
+    },
+    {
+        pergunta:"Qual é a capital da Palestina?",opcoes:["Cafarnaum","Belém","Nazaré","Jerusalém"], correta:3
+    },
+    {
+        pergunta:"Qual é a carpintaria de Jesus?",opcoes:["Cafarnaum","Belém","Nazaré","Jerusalém"], correta:2
+    },
+    {
+        pergunta:"Qual é a cidade onde viva Jesus quase 30 anos? ",opcoes:["Cafarnaum","Belém","Nazaré","Jerusalém"], correta:2
+    },
+    {
+        pergunta:"Qual é a cidade marítma onde Mateus morava?",opcoes:["Cafarnaum","Belém","Nazaré","Jerusalém"], correta:0
+    },        
+    {
+        pergunta:"Qual é a cidade onde Jesus morreu?",opcoes:["Cafarnaum","Belém","Nazaré","Jerusalém"], correta:3
+    },        
+    {// PROVA 7 E 8 DE OBREIROS APROVADOS
+        pergunta:"Em que rio batizava João Batista?",opcoes:["Rio ...","Rio ...","Rio Jordão","Nenhuma das opções"], correta:2
+    },        
+    {
+        pergunta:"Quais são as duas províncias onde João estava batizando? ",opcoes:["Galileia e Peréia","Judéia e Samaria","Decápolis e Ituréia","Judéia e Peréia"], correta:3
+    },        
+    {
+        pergunta:"Quantos quilômetros mede o mar da Galiléia(largura e comprimento)",opcoes:["10x20","20x20","20x30","10x40"], correta:0
+    },        
+    {
+        pergunta:"Qual é o ano do Ministério de Jesus na Galiléia?",opcoes:["Ano de Preparação","Ano de Popularidade","Ano de Paixão"," Vida Ressuscitada"], correta:1
+    },
+    { // PROVA 9 E 10 DE OBREIROS APROVADOS
+        pergunta:"João pregando o Reino, pertence ao ano de?",opcoes:[" Preparação","Popularidade","Paixão"," Vida Ressuscitada"], correta:1
+    },
+    {
+        pergunta:"Jesus coroado com uma coroa de espinho, pertence ao ano de?",opcoes:[" Preparação","Popularidade","Paixão"," Vida Ressuscitada"], correta:2
+    },
+    {
+        pergunta:"Jesus nasceu na cidadezinha de Belém, pertence ao ano de?",opcoes:[" Preparação","infância","Paixão"," Vida Ressuscitada"], correta:1
+    },
+    {
+        pergunta:"Paulo pregando o Reino em Roma, pertence a?",opcoes:[" Preparação","Popularidade","Paixão"," Vida Ressuscitada"], correta:3
+    },
+    {
+        pergunta:"Jesus abandonou sua carpintaria, pertence ao ano de?",opcoes:[" Preparação","Popularidade","Paixão"," Vida Ressuscitada"], correta:0
+    },
+    {
+        pergunta:"O nascimento de João Batista, pertence ao ano de?",opcoes:[" Infância","Popularidade","Paixão"," Vida Ressuscitada"], correta:0
+    },
+    {
+        pergunta:"Jesus morreu em Jerusalém, pertence ao ano de?",opcoes:[" Preparação","Popularidade","Paixão"," Vida Ressuscitada"], correta:2
+    },
+    {
+        pergunta:"Morte deJoão Baista, pertence ao ano de?",opcoes:[" Preparação","Popularidade","Paixão"," Vida Ressuscitada"], correta:2
+    },
+    {
+        pergunta:"Ministério de Jesus na Galiléia, pertence ao ano de?",opcoes:[" Preparação","Popularidade","Paixão"," Vida Ressuscitada"], correta:1
+    },
+    {
+        pergunta:"Reino pregado em todas nações, pertence a?",opcoes:[" Preparação","Popularidade","Paixão"," Vida Ressuscitada"], correta:3
+    },
+    {
+        pergunta:"Jesus morava em Nazaré, pertence ao ano de?",opcoes:[" Preparação","Popularidade","Paixão"," Vida Ressuscitada"], correta:0
+    },
+    {
+        pergunta:"João Batista encarcerdo, pertence ao ano de?",opcoes:[" Preparação","Popularidade","Paixão"," Vida Ressuscitada"], correta:1
+    },
+    {
+        pergunta:"Jesus em Cafarnaum, pertence ao ano de?",opcoes:[" Preparação","Popularidade","Paixão"," Vida Ressuscitada"], correta:1
+    },
+    {
+        pergunta:"Jesus batizado por João Batista no Rio Jordão, pertence ao ano de?",opcoes:[" Preparação","Popularidade","Paixão"," Vida Ressuscitada"], correta:0
+    },
+    {// RPOVA 11 DE OBREIROS APROVADOS
+        pergunta:"Qual é a ordem das três tecnicas básicass de estudo bíblico?",opcoes:["Interpretação, Observação e Aplicação","Obervação, Aplicação e Interpretação","Aplicação, interpretação e Observação","Observação, Interpretação e Aplicação"], correta:3
+    },
+    {
+        pergunta:"A quem viu Jesus na coletoria?",opcoes:["João","Simão Pedro","Mateus","Judas Iscariotes"],correta:2
+    },
+    {
+        pergunta:"Quem criticou a Jesus por comer com essa gente?",opcoes:["Fariseus","Saduceus","Judeus","Romanos"],correta:0
+    },
+    {//PROVA 13 DE OBREIROS APROVADOS
+        pergunta:"Quantos anúncios do nascimentos de Jesus temos nos Evangelhos?",opcoes:["1","2","3","4"],correta:1
+    },
+    {
+        pergunta:"Em que cidadezinha foram anúnciado o nascimento de Jesus?",opcoes:["Belém","Cafarnaum","Jerusalém","Nazaré"],correta:3
+    },
+    {
+        pergunta:"A quem foi anúnciado o nascimento de Jesus no livro de Mateus?",opcoes:["Maria","José","Os magos","Os pastores"],correta:1
+    },
+    {
+        pergunta:"A quem foi anúnciado o nascimento de Jesus no livro de Marcos?",opcoes:["Maria","José","Os magos","Os pastores"],correta:0
+    },
+    {
+        pergunta:"Maria concebeu Jesus por meio do?",opcoes:["José","Espírito Santo","Anjo Gabriel","Nenhuma das opções"],correta:1
+    },
+    {
+        pergunta:"Quantas natureza tem Jesus?",opcoes:["Uma","Duas","Três","Quatro"],correta:1
+    },
+    {
+        pergunta:"Quantas personalidade tem Jesus?",opcoes:["uma","Duas","Três","Quatro"],correta:0
+    },
+    {
+        pergunta:"O que quer dizer Emanuel?",opcoes:["Deus Contigo","Deus convosco","Deus Consigo","Deus connosco"],correta:3
+    },
+    {// PROVA 14 DE OBREIROS APROVADOS
+        pergunta:"Quantas geneologias de Cristo há nos Evangelho?",opcoes:["Uma","Duas","Três","Quatro"],correta:1
+    },
+    {
+        pergunta:"A qual das geneologias de Jesus os Judeus daria mais importância?",opcoes:["Maria","José","As duas pessoas","Nenhuma das duas pessoas"],correta:1
+    },
+    {
+        pergunta:"Qual é a data de Davi?",opcoes:["600 A.C","1500 A.C","2000 A.C","Nenhuma das opções"],correta:3
+    },    
+    {
+        pergunta:"Quem era protetor legal de Jesus?",opcoes:["Maria","José","As duas pessoas","Nenhuma das duas pessoas"],correta:1
+    },
+    {
+        pergunta:"Qual é a data do exílio á Babilónia?",opcoes:["500 A.C","1000 A.C","2000 A.C","Nenhuma das opções"],correta:3
+    },  
+    {
+        pergunta:"Qual é a data de Abraão?",opcoes:["500 A.C","1000 A.C","2000 A.C","Nenhuma das opções"],correta:2
+    }, 
+    {
+        pergunta:"Quantos antepassados há em cada uma das primeiras três da geneologias?",opcoes:["3","13","15","Nenhuma das opções"],correta:3
+    },  
+    {//PROVA 15 DE OBREIROS APROVADOS
+        pergunta:"Quais são as duas pessoas na geneologia que receberam a promessa em Mateus?",opcoes:["José e Maria","Abraão e José","Davi e Abrão","Davi e Abraão"],correta:3
+    }, 
+    {
+        pergunta:"Qual é o título da éspoca Abrão ?",opcoes:["Reino Vindouro","Reino Vacilante","Reino Verdadeiro","Nenhuma das opções"],correta:3
+    }, 
+    {
+        pergunta:"Qual é o título da éspoca Abraão ?",opcoes:["Reino Vindouro","Reino Vacilante","Reino Verdadeiro","Nenhuma das opções"],correta:0
+    }, 
+    {
+        pergunta:"Qual é o título da éspoca Davi ?",opcoes:["Reino Vindouro","Reino Vacilante","Reino Verdadeiro","Nenhuma das opções"],correta:1
+    }, 
+    {
+        pergunta:"Qual é o título da éspoca Babilónia ?",opcoes:["Reino Vindouro","Reino Vacilante","Reino Verdadeiro","Nenhuma das opções"],correta:2
+    }, 
+    {
+        pergunta:"Qual é o título da éspoca Cristo ?",opcoes:["Reino Vindouro","Reino Vacilante","Reino Verdadeiro","Reino Verdadeiro"],correta:3
+    }, 
+    {
+        pergunta:"Qual é o profeta que observou que Deus ia nascer num berrço?",opcoes:["Daniel","Isaías","Míquéias","Paulo"],correta:1
+    },
+    {
+        pergunta:"Qual dos quatro Evangelho é o mais apropriado para alguém que quer saber se Jesus é o Filho de Deus?",opcoes:["Mateus","Marcos","Lucas","João"],correta:3
+    }, 
+    {
+        pergunta:"Quem é o profeta do Velho Testamento que nos ensinou do Filho do Homem chegando nas nuvens?",opcoes:["Moisés","Josué","Daniel","Jeremias"],correta:2
+    }, 
+    {
+        pergunta:"Dê a referência no Velho Testamento que ensina sobre o Filho do Homem?",opcoes:["Daniel 7:7","Daniel 7:13","Daniel 7:20","Daniel 7:33"],correta:1
+    }, 
+    {
+        pergunta:"Que etapa da humanidade do Messias era especialmente desagradável aos Judeus?",opcoes:["Ascenção","Morte","Ressureção","Nascimento"],correta:2
+    }, 
+  /*
+    {
+        pergunta:"?",opcoes:["","","",""],correta:
+    },  */
+
+
+
+
+
+
+
+
+
+
+
+
 ];
+
+
 const TOTAL_PERGUNTAS= 4
 const somClick = new Audio("musica/toc.mp3");
 const somTempo = new Audio("musica/tempo.mp3");
@@ -248,6 +531,15 @@ async function finalizarJogo() {
     somTempo.pause();
     somTempo.currentTime = 0;
 
+    // 🔥 TOCAR SOM CERTO
+    if (vidas > 0) {
+        somVitoria.currentTime = 0;
+        somVitoria.play();
+    } else {
+        somDerrota.currentTime = 0;
+        somDerrota.play();
+    }
+
     // 🔥 MOSTRA RESULTADO IMEDIATO (SEM FIREBASE)
     const overlay = document.getElementById("overlayFinal");
     overlay.style.display = "flex";
@@ -280,21 +572,35 @@ async function finalizarJogo() {
 
 // 🔥 COLOCA AQUI
 async function obterPosicaoOnline() {
-    if (!window.db) return "-"; // 🔥 evita travar
+    if (!window.db) return "-";
 
-    const querySnapshot = await getDocs(collection(window.db, "ranking"));
+    try {
+        const querySnapshot = await getDocs(collection(window.db, "ranking"));
 
-    let lista = [];
+        let lista = [];
 
-    querySnapshot.forEach((doc) => {
-        lista.push(doc.data());
-    });
+        querySnapshot.forEach((doc) => {
+            lista.push(doc.data());
+        });
 
-    lista.sort((a, b) => b.pontos - a.pontos);
+        if (lista.length === 0) return "-"; // 🔥 evita bug
 
-    let posicao = lista.findIndex(item => item.nome === nome);
+        // ordena
+        lista.sort((a, b) => b.pontos - a.pontos);
 
-    return posicao !== -1 ? posicao + 1 : "-";
+        // 🔥 usa posição pelo score (mais seguro)
+        let posicao = lista.findIndex(item =>
+            item.nome === nome && item.pontos === pontuacao
+        );
+
+        if (posicao === -1) return "-";
+
+        return posicao + 1;
+
+    } catch (e) {
+        console.log("Erro ao obter posição:", e);
+        return "-";
+    }
 }
 
 // 🔄 REINICIAR
@@ -370,32 +676,58 @@ function salvarHistorico() {
     localStorage.setItem("historico", JSON.stringify(historico));
 }
 
+async function verHistorico() {
+    const box = document.getElementById("historicoBox");
+    const conteudo = document.getElementById("historicoConteudo");
 
-function verHistorico() {
-    let historico = JSON.parse(localStorage.getItem("historico")) || [];
+    box.style.display = "block";
+    conteudo.innerHTML = "Carregando...";
 
-    let box = document.getElementById("historicoBox");
-    let conteudo = document.getElementById("historicoConteudo");
+    try {
+        const querySnapshot = await getDocs(collection(window.db, "ranking"));
 
-    box.style.display = "flex";
+        let jogadores = {};
 
-    if (historico.length === 0) {
-        conteudo.innerHTML = "Sem ranking ainda.";
-        return;
+        // 🔥 AGRUPAR E SOMAR
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+
+            if (!jogadores[data.nome]) {
+                jogadores[data.nome] = 0;
+            }
+
+            jogadores[data.nome] += data.pontos;
+        });
+
+        // 🔥 TRANSFORMAR EM ARRAY
+        let lista = Object.keys(jogadores).map(nome => {
+            return {
+                nome: nome,
+                pontos: jogadores[nome]
+            };
+        });
+
+        // 🔥 ORDENAR
+        lista.sort((a, b) => b.pontos - a.pontos);
+
+        // 🔥 PEGAR TOP 10
+        lista = lista.slice(0, 10);
+
+        // 🔥 MOSTRAR
+        conteudo.innerHTML = "";
+
+        lista.forEach((item, index) => {
+            conteudo.innerHTML += `
+                <p>🏆 #${index + 1} - ${item.nome} (${item.pontos} pts)</p>
+            `;
+        });
+
+    } catch (e) {
+        console.log(e);
+        conteudo.innerHTML = "Erro ao carregar ranking";
     }
-
-    conteudo.innerHTML = "<h3>🏆 TOP 5</h3>";
-
-    let medalhas = ["🥇", "🥈", "🥉", "🏅", "🏅"];
-
-    historico.forEach((item, i) => {
-        conteudo.innerHTML += `
-            <div>
-                ${medalhas[i]} ${item.nome} ⭐ ${item.pontos}
-            </div>
-        `;
-    });
 }
+
 function reiniciarJogo() {
     pontuacao = 0;
     atual = 0;
