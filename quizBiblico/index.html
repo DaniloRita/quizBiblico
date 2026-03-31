@@ -28,18 +28,18 @@
 
     <button id="btnIniciar" onclick="abrirNivel()">▶️ Jogar</button>
     <button onclick="iniciarDesafio()">🔥 Modo Desafio</button>
-
     <button onclick="verHistorico()">📜 Histórico</button>
-    <button onclick="loginGoogle()" style="
+
+<button id="btnLogin" onclick="loginGoogle()" style="
     background: #4285F4;
     color: white;
     border: none;
     padding: 10px;
     border-radius: 5px;
+    margin-top: 10px;
 ">
-🔐 Entrar com Google
+🔐 Login com Google
 </button>
-
 </div>
 
 <!-- 🔥 AGORA FORA -->
@@ -119,12 +119,14 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { getAuth, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
 
   const firebaseConfig = {
     apiKey: "AIzaSyC1qT3SGgwv2GQOQRUt4QIFp4acJOt7Z3Q",
     authDomain: "quiz-biblico-5e71e.firebaseapp.com",
     projectId: "quiz-biblico-5e71e",
-    storageBucket: "quiz-biblico-5e71e.firebasestorage.app",
+    storageBucket: "quiz-biblico-5e71e.appspot.com",
     messagingSenderId: "1065039796116",
     appId: "1:1065039796116:web:6d58c6e63c451e1f4fe181"
   };
@@ -132,7 +134,15 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  window.db = db; // 🔥 ISSO É ESSENCIAL
+    const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  // 🔥 deixa global
+  window.db = db;
+  window.auth = auth;
+  window.provider = provider;
+
+
 </script>
 
 

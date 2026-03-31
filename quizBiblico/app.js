@@ -1,7 +1,5 @@
 
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-const auth = getAuth();
-const provider = new GoogleAuthProvider();
 
 
 import { getDocs, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -14,13 +12,24 @@ let modoDesafio = false;
 let nome = "";
 let nomeDefinido = false;
 window.onload = function () {
+    const logado = localStorage.getItem("logado");
+
+    if (logado === "true") {
+        document.getElementById("btnLogin").style.display = "none";
+    }
+};
+
+window.addEventListener("load", () => {
     const nomeSalvo = localStorage.getItem("nomeJogador");
 
     if (nomeSalvo) {
         document.getElementById("nomeJogador").value = nomeSalvo;
         nome = nomeSalvo;
+
+        document.getElementById("nomeJogador").style.display = "none";
+        document.getElementById("btnIniciar").innerText = "Jogar novamente";
     }
-};
+});
 
 
 const perguntas = [
@@ -337,7 +346,9 @@ let perguntasSelecionadas = [...perguntas]
 
 let atual = 0;
 let pontuacao = 0;
-let tempo = 30;
+let tempoPadrao = 30;
+let tempoDesafio = 20;
+let tempo;
 let intervalo;
 let pausado = false;
 
@@ -363,13 +374,14 @@ function atualizarEstrela(acertou = true) {
 
 // 📌 CARREGAR PERGUNTA
 function carregarPergunta() {
-if (
-    (modoDesafio && atual >= totalPerguntasDesafio) ||
-    (!modoDesafio && atual >= perguntasSelecionadas.length)
-) {
-    finalizarJogo();
-    return;
-}
+    if (
+        (modoDesafio && atual >= totalPerguntasDesafio) ||
+        (!modoDesafio && atual >= perguntasSelecionadas.length)
+    ) {
+        finalizarJogo();
+        return;
+    }
+
 
         // 🔇 PARA QUALQUER SOM ANTES
     somTempo.pause();
@@ -378,10 +390,13 @@ if (
     // 🔊 COMEÇA NOVO SOM
     somTempo.play();
 
+if (modoDesafio) {
+    tempo = 20; // 🔥 desafio sempre manda
+} else {
     if (nivel === "facil") tempo = 30;
     if (nivel === "medio") tempo = 20;
     if (nivel === "dificil") tempo = 10;
-
+}
 
     const p = perguntasSelecionadas[atual];
 
@@ -392,11 +407,7 @@ if (
     });
 
     document.getElementById("resultado").innerText = "";
-    //define tempo baseado no nível
-    if (nivel === "facil") tempo = 30;
-    if (nivel === "medio") tempo = 20;
-    if (nivel === "dificil") tempo = 10;
-    //atualiza na tela
+
     document.getElementById("tempo").innerText = "⏱️ " + tempo;
 
     document.getElementById("progressoTempo").style.width = "100%";
@@ -626,13 +637,13 @@ async function obterPosicaoOnline() {
 
 // 🔄 REINICIAR
 function iniciarJogo() {
-            // 🔊 toca som de clique
+
+    // 🔊 som
     somClick.currentTime = 0;
     somClick.play();
 
     let nomeSalvo = localStorage.getItem("nomeJogador");
 
-    // 🔥 Se já existe nome guardado, usa direto
     if (nomeSalvo) {
         nome = nomeSalvo;
     } else {
@@ -643,17 +654,23 @@ function iniciarJogo() {
             return;
         }
 
-        // 🔥 Salva o nome só uma vez
         localStorage.setItem("nomeJogador", nome);
     }
+
+    // 🔥 AGORA FORA DO IF (IMPORTANTE)
+    if (modoDesafio) {
+        tempo = 20; // desafio
+    } else {
+        tempo = 30; // normal
+    }
+
+    document.getElementById("tempo").innerText = tempo;
 
     document.getElementById("telaInicial").style.display = "none";
     document.getElementById("quiz").style.display = "flex";
 
     carregarPergunta();
 }
-
-
 
 // ⏸️ PAUSE
 function pausarJogo() {    const btn = document.getElementById("btnPause");
@@ -753,7 +770,8 @@ function reiniciarJogo() {
     pontuacao = 0;
     atual = 0;
     tempo = 30;
-    vidas = 3;
+    vidas = modoDesafio ? 1 : 3;
+
 
     document.getElementById("vidas").innerText = "❤️ " + vidas; // 🔥 FALTAVA ISSO
 
@@ -785,16 +803,6 @@ async function salvarRankingOnline() {
     });
 }
 
-
-window.onload = function () {
-    let nomeSalvo = localStorage.getItem("nomeJogador");
-
-    if (nomeSalvo) {
-        // 🔥 Esconde o input e botão
-        document.getElementById("nomeJogador").style.display = "none";
-        document.getElementById("btnIniciar").innerText = "Jogar novamente";
-    }
-};
 function trocarNome() {
     let novoNome = prompt("Digite seu novo nome:");
 
@@ -894,9 +902,16 @@ function iniciarDesafio() {
     vidas = 1;
     pontuacao = 0;
     atual = 0;
-    console.log("Modo desafio ativado"); // teste
+    document.getElementById("vidas").innerText = "❤️ " + vidas;
 
-    iniciarJogo(); // usa tua função que começa o jogo
+    // 🔥 PEGA 10 PERGUNTAS NO DESAFIO
+    perguntasSelecionadas = [...perguntas]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, totalPerguntasDesafio);
+
+    console.log("Modo desafio ativado");
+
+    iniciarJogo();
 }
 
 function escolherNivel(n) {
@@ -921,13 +936,19 @@ document.addEventListener("visibilitychange", () => {
 });
 async function loginGoogle() {
     try {
-        const result = await signInWithPopup(auth, provider);
+        const result = await signInWithPopup(window.auth, window.provider);
 
         const user = result.user;
 
         nome = user.displayName;
 
         document.getElementById("nomeJogador").value = nome;
+
+        // 🔥 SALVA QUE ESTÁ LOGADO
+        localStorage.setItem("logado", "true");
+
+        // 🔥 ESCONDE BOTÃO
+        document.getElementById("btnLogin").style.display = "none";
 
         alert("Logado como " + nome);
 
@@ -953,4 +974,5 @@ window.toggleModoEscuro = toggleModoEscuro;
 window.resetarProgresso = resetarProgresso;
 window.trocarNome = trocarNome;
 window.saberMais = saberMais;
-
+window.iniciarDesafio = iniciarDesafio;
+window.loginGoogle = loginGoogle;
