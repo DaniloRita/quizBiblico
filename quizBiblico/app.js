@@ -1,8 +1,15 @@
 
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
+import { 
+    getDocs, 
+    collection, 
+    addDoc, 
+    query, 
+    orderBy, 
+    limit 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-import { getDocs, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 let jogoFinalizado = false;
 let totalPerguntasDesafio = 10;
 
@@ -722,48 +729,42 @@ async function verHistorico() {
     conteudo.innerHTML = "Carregando...";
 
     try {
-        const querySnapshot = await getDocs(collection(window.db, "ranking"));
+        // 🔥 NORMAL
+        const normalSnap = await getDocs(collection(window.db, "ranking"));
 
-        let jogadores = {};
+        let normal = [];
+        normalSnap.forEach(doc => normal.push(doc.data()));
 
-        // 🔥 AGRUPAR E SOMAR
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
+        normal.sort((a, b) => b.pontos - a.pontos);
+        normal = normal.slice(0, 5);
 
-            if (!jogadores[data.nome]) {
-                jogadores[data.nome] = 0;
-            }
+        // 🔥 DESAFIO
+        const desafioSnap = await getDocs(collection(window.db, "ranking_desafio"));
 
-            jogadores[data.nome] += data.pontos;
-        });
+        let desafio = [];
+        desafioSnap.forEach(doc => desafio.push(doc.data()));
 
-        // 🔥 TRANSFORMAR EM ARRAY
-        let lista = Object.keys(jogadores).map(nome => {
-            return {
-                nome: nome,
-                pontos: jogadores[nome]
-            };
-        });
-
-        // 🔥 ORDENAR
-        lista.sort((a, b) => b.pontos - a.pontos);
-
-        // 🔥 PEGAR TOP 10
-        lista = lista.slice(0, 10);
+        desafio.sort((a, b) => b.pontos - a.pontos);
+        desafio = desafio.slice(0, 5);
 
         // 🔥 MOSTRAR
-        conteudo.innerHTML = "";
+        conteudo.innerHTML = "<h3>🌍 Ranking Mundial</h3>";
 
-        lista.forEach((item, index) => {
-            conteudo.innerHTML += `
-                <p>🏆 #${index + 1} - ${item.nome} (${item.pontos} pts)</p>
-            `;
+        normal.forEach((item, i) => {
+            conteudo.innerHTML += `<p>#${i+1} - ${item.nome} (${item.pontos})</p>`;
+        });
+
+        conteudo.innerHTML += "<h3>🔥 Ranking Desafio</h3>";
+
+        desafio.forEach((item, i) => {
+            conteudo.innerHTML += `<p>#${i+1} - ${item.nome} (${item.pontos})</p>`;
         });
 
     } catch (e) {
         console.log(e);
         conteudo.innerHTML = "Erro ao carregar ranking";
     }
+        mostrarRanking("normal"); // 🔥 começa com mundial
 }
 
 function reiniciarJogo() {
@@ -795,9 +796,11 @@ function fecharHistorico() {
 
 // 🔥 COLOCA AQUI
 async function salvarRankingOnline() {
-    if (!window.db) return; // 🔥 evita travar
+    if (!window.db) return;
 
-    await addDoc(collection(window.db, "ranking"), {
+    const colecao = modoDesafio ? "ranking_desafio" : "ranking";
+
+    await addDoc(collection(window.db, colecao), {
         nome: nome,
         pontos: pontuacao
     });
@@ -957,8 +960,44 @@ async function loginGoogle() {
         alert("Erro no login");
     }
 }
+async function mostrarRanking(tipo) {
 
+    const conteudo = document.getElementById("historicoConteudo");
+    conteudo.innerHTML = "Carregando...";
 
+    const colecao = tipo === "desafio" ? "ranking_desafio" : "ranking";
+
+    try {
+        const snapshot = await getDocs(collection(window.db, colecao));
+
+        let lista = [];
+        snapshot.forEach(doc => lista.push(doc.data()));
+
+        lista.sort((a, b) => b.pontos - a.pontos);
+
+        let html = "";
+
+        lista.slice(0, 10).forEach((item, i) => {
+            html += `<p>#${i+1} - ${item.nome} (${item.pontos})</p>`;
+        });
+
+        conteudo.innerHTML = html;
+
+        // 🔥 marcar aba ativa
+        document.getElementById("tabMundial").classList.remove("ativo");
+        document.getElementById("tabDesafio").classList.remove("ativo");
+
+        if (tipo === "normal") {
+            document.getElementById("tabMundial").classList.add("ativo");
+        } else {
+            document.getElementById("tabDesafio").classList.add("ativo");
+        }
+
+    } catch (e) {
+        console.log(e);
+        conteudo.innerHTML = "Erro ao carregar ranking";
+    }
+}
 
 window.abrirNivel = abrirNivel;
 window.verHistorico = verHistorico;
@@ -976,3 +1015,5 @@ window.trocarNome = trocarNome;
 window.saberMais = saberMais;
 window.iniciarDesafio = iniciarDesafio;
 window.loginGoogle = loginGoogle;
+window.mostrarRanking = mostrarRanking;
+
