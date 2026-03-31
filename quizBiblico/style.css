@@ -478,3 +478,30 @@ button {
     background: #4CAF50;
     color: white;
 }
+#historicoConteudo p {
+    padding: 6px;
+    margin: 4px 0;
+    background: #eee;
+    border-radius: 5px;
+    color: black;
+        word-wrap: break-word;      /* 🔥 quebra palavras grandes */
+    overflow-wrap: break-word;  /* 🔥 garante quebra */
+}
+#historicoConteudo p:nth-child(even) {
+    background: #ddd;
+}
+#historicoConteudo p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.jogador {
+    background: gold;
+    color: black;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 5px;
+}
+

@@ -25,6 +25,24 @@ window.onload = function () {
         document.getElementById("btnLogin").style.display = "none";
     }
 };
+window.addEventListener("popstate", function () {
+
+    // Se estiver no histórico
+    if (document.getElementById("historicoBox").style.display === "block") {
+        fecharHistorico();
+    }
+
+    // Se estiver no jogo
+    else if (document.getElementById("quiz").style.display === "flex") {
+        sairJogo();
+    }
+
+    // Senão volta pra tela inicial
+    else {
+        document.getElementById("telaInicial").style.display = "block";
+    }
+});
+
 
 window.addEventListener("load", () => {
     const nomeSalvo = localStorage.getItem("nomeJogador");
@@ -644,6 +662,7 @@ async function obterPosicaoOnline() {
 
 // 🔄 REINICIAR
 function iniciarJogo() {
+        history.pushState({ pagina: "jogo" }, "");
 
     // 🔊 som
     somClick.currentTime = 0;
@@ -764,6 +783,8 @@ async function verHistorico() {
         console.log(e);
         conteudo.innerHTML = "Erro ao carregar ranking";
     }
+        history.pushState({ pagina: "historico" }, "");
+
         mostrarRanking("normal"); // 🔥 começa com mundial
 }
 
@@ -975,11 +996,25 @@ async function mostrarRanking(tipo) {
 
         lista.sort((a, b) => b.pontos - a.pontos);
 
-        let html = "";
+let html = "";
 
-        lista.slice(0, 10).forEach((item, i) => {
-            html += `<p>#${i+1} - ${item.nome} (${item.pontos})</p>`;
-        });
+const jogadorAtual = localStorage.getItem("nomeJogador");
+
+lista.slice(0, 10).forEach((item, i) => {
+
+    let medalha = "";
+
+    if (i === 0) medalha = "🥇";
+    else if (i === 1) medalha = "🥈";
+    else if (i === 2) medalha = "🥉";
+    else medalha = `${i+1}`;
+
+    let destaque = item.nome === jogadorAtual ? "jogador" : "";
+
+    html += `<p class="${destaque}">
+        ${medalha} - ${item.nome} (${item.pontos})
+    </p>`;
+});
 
         conteudo.innerHTML = html;
 
