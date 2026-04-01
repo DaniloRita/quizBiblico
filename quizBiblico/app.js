@@ -958,11 +958,12 @@ function saberMais(){
 }
 document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
-        musicaFundo.pause(); // 🔇 pausa quando sai do site
+        musicaFundo.pause();
     } else {
-        musicaFundo.play(); // 🔊 volta quando retorna
+        tocarSom(musicaFundo);
     }
 });
+
 async function loginGoogle() {
     try {
         const result = await signInWithPopup(window.auth, window.provider);
@@ -1039,12 +1040,14 @@ lista.slice(0, 10).forEach((item, i) => {
     }
 }
 function tocarSom(audio) {
-    audio.pause();
+    if (!somAtivo) return; // 🔥 respeita config de som
+
     audio.currentTime = 0;
     audio.play().catch(() => {
         console.log("Som bloqueado");
     });
 }
+
 
 
 
