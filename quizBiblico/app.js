@@ -1033,6 +1033,13 @@ lista.slice(0, 10).forEach((item, i) => {
         conteudo.innerHTML = "Erro ao carregar ranking";
     }
 }
+function tocarSom(audio) {
+    audio.currentTime = 0;
+    audio.play().catch(() => {
+        console.log("Som bloqueado pelo navegador");
+    });
+}
+
 
 window.abrirNivel = abrirNivel;
 window.verHistorico = verHistorico;
