@@ -44,6 +44,17 @@ window.addEventListener("popstate", function () {
         document.getElementById("telaInicial").style.display = "block";
     }
 });
+let audioLiberado = false;
+
+document.addEventListener("click", () => {
+    if (!audioLiberado) {
+        musicaFundo.play().then(() => {
+            musicaFundo.pause();
+            musicaFundo.currentTime = 0;
+            audioLiberado = true;
+        });
+    }
+}, { once: true });
 
 window.addEventListener("load", () => {
     const nomeSalvo = localStorage.getItem("nomeJogador");
@@ -350,7 +361,7 @@ const perguntas = [
 const TOTAL_PERGUNTAS= 4
 const somClick = new Audio("musica/toc.mp3");
 const somTempo = new Audio("musica/tempo.mp3");
-somTempo.loop = true; // 🔁 fica repetindo
+somTempo.loop = false; // 🔁 fica repetindo
 const somVitoria = new Audio("musica/victoria.mp3");
 const somDerrota = new Audio("musica/lose.mp3");
 const somAcerto = new Audio("musica/acerto.mp3");
@@ -1083,16 +1094,16 @@ lista.slice(0, 10).forEach((item, i) => {
     }
 }
 function tocarSom(audio) {
-    if (!somAtivo) return;
+    if (!somAtivo || !audioLiberado) return;
 
+    audio.pause();
     audio.currentTime = 0;
 
-    audio.play().then(() => {
-        // tocou
-    }).catch(() => {
-        console.log("bloqueado");
+    audio.play().catch(e => {
+        console.log("Erro ao tocar som:", e);
     });
 }
+
 
 function pararTodosSons() {
     todosSons.forEach(audio => {
