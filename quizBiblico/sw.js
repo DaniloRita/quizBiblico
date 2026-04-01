@@ -1,10 +1,22 @@
-const CACHE_NAME = "quiz-cache-v1";
+const CACHE_NAME = "quiz-cache-v4";
 
 const urlsToCache = [
   "./",
   "./index.html",
   "./app.js",
-  "./style.css",
+
+  // 🔊 ÁUDIOS
+  "./musica/toc.mp3",
+  "./musica/tempo.mp3",
+  "./musica/victoria.mp3",
+  "./musica/lose.mp3",
+  "./musica/acerto.mp3",
+  "./musica/errado.mp3",
+  "./musica/fundo.mp3",
+
+  // 🖼️ IMAGENS
+  "./img/icon-192.png",
+  "./img/icon-512.png"
 ];
 
 self.addEventListener("install", event => {
@@ -20,4 +32,3 @@ self.addEventListener("fetch", event => {
       .then(response => response || fetch(event.request))
   );
 });
-

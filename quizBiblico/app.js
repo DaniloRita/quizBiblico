@@ -695,7 +695,8 @@ async function obterPosicaoOnline() {
 }
 
 // 🔄 REINICIAR
-function iniciarJogo() {
+function iniciarJogo() { 
+       document.body.click(); // 🔥 força interação
         history.pushState({ pagina: "jogo" }, "");
      pararTodosSons(); // 🔥 limpa tudo
 
@@ -1082,13 +1083,17 @@ lista.slice(0, 10).forEach((item, i) => {
     }
 }
 function tocarSom(audio) {
-    if (!somAtivo) return; // 🔥 respeita config de som
+    if (!somAtivo) return;
 
     audio.currentTime = 0;
-    audio.play().catch(() => {
-        console.log("Som bloqueado");
+
+    audio.play().then(() => {
+        // tocou
+    }).catch(() => {
+        console.log("bloqueado");
     });
 }
+
 function pararTodosSons() {
     todosSons.forEach(audio => {
         audio.pause();
