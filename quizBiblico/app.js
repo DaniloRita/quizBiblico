@@ -1052,3 +1052,7 @@ window.iniciarDesafio = iniciarDesafio;
 window.loginGoogle = loginGoogle;
 window.mostrarRanking = mostrarRanking;
 
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js")
+        .then(() => console.log("SW registrado"));
+}
