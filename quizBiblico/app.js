@@ -361,6 +361,10 @@ musicaFundo.addEventListener("timeupdate", () => {
         musicaFundo.play();
     }
 });
+document.addEventListener("click", () => {
+    musicaFundo.play();
+}, { once: true });
+
 
 
 musicaFundo.loop = true;
@@ -413,7 +417,8 @@ function carregarPergunta() {
     somTempo.currentTime = 0;
 
     // 🔊 COMEÇA NOVO SOM
-    somTempo.play();
+    tocarSom(somTempo);
+
 
 if (modoDesafio) {
     tempo = 20; // 🔥 desafio sempre manda
@@ -438,10 +443,6 @@ if (modoDesafio) {
     document.getElementById("progressoTempo").style.width = "100%";
     document.getElementById("progressoTempo").style.background = "lime";
 
-    document.body.addEventListener("click", () => {
-        musicaFundo.play();
-    }, { once: true });
-
     clearInterval(intervalo);
     iniciarTempo();
 
@@ -456,12 +457,15 @@ function iniciarTempo() {
 
         document.getElementById("tempo").innerText = "⏱️ " + tempo;
 
-        let porcentagem = (tempo / 30) * 100;
+    let tempoMax = modoDesafio ? 20 : 30;
+    let porcentagem = (tempo / tempoMax) * 100;
+
         document.getElementById("progressoTempo").style.width = porcentagem + "%";
 
         if (tempo <= 10) {
             document.getElementById("progressoTempo").style.background = "red";
                 somTempo.playbackRate = 1.5; // mais rápido 😱
+                tocarSom(somTempo);
         }
 
         if (tempo <= 0) {
@@ -543,7 +547,7 @@ function atualizarPontuacao(acertou) {
         atualizarEstrela();
 
         somAcerto.currentTime = 0;
-        somAcerto.play();
+        tocarSom(somAcerto);
 
         setTimeout(() => {
             somAcerto.pause();
@@ -552,7 +556,7 @@ function atualizarPontuacao(acertou) {
 
     } else {
         somErro.currentTime = 0;
-        somErro.play();
+        tocarSom(somErro);
 
         setTimeout(() => {
             somErro.pause();
@@ -590,11 +594,11 @@ async function finalizarJogo() {
     // 🔥 TOCAR SOM CERTO
     if (vidas > 0) {
         somVitoria.currentTime = 0;
-somVitoria.play().catch(e => console.log("Erro ao tocar som:", e));
+tocarSom(somVitoria);
 
     } else {
         somDerrota.currentTime = 0;
-        somDerrota.play();
+        tocarSom(somDerrota);
     }
 
     // 🔥 MOSTRA RESULTADO IMEDIATO (SEM FIREBASE)
@@ -666,7 +670,7 @@ function iniciarJogo() {
 
     // 🔊 som
     somClick.currentTime = 0;
-    somClick.play();
+    tocarSom(somClick);
 
     let nomeSalvo = localStorage.getItem("nomeJogador");
 
@@ -713,8 +717,9 @@ function pausarJogo() {    const btn = document.getElementById("btnPause");
         }
      
     } else {
-        musicaFundo.play();
-        somTempo.play();
+        tocarSom(musicaFundo);
+        tocarSom(somTempo);
+
         btn.innerText = "⏸";
                 // 🔓 LIBERA BOTÕES
         for (let i = 0; i < 4; i++) {
@@ -941,7 +946,7 @@ function iniciarDesafio() {
 function escolherNivel(n) {
         // 🔊 toca som de clique
     somClick.currentTime = 0;
-    somClick.play();
+    tocarSom(somClick);
     nivel = n;
 
     document.getElementById("menuNivel").style.display = "none";
@@ -1034,11 +1039,13 @@ lista.slice(0, 10).forEach((item, i) => {
     }
 }
 function tocarSom(audio) {
+    audio.pause();
     audio.currentTime = 0;
     audio.play().catch(() => {
-        console.log("Som bloqueado pelo navegador");
+        console.log("Som bloqueado");
     });
 }
+
 
 
 window.abrirNivel = abrirNivel;
