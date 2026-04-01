@@ -12,6 +12,8 @@ import {
 
 let jogoFinalizado = false;
 let totalPerguntasDesafio = 10;
+let jogoAtivo = true;
+
 
 let nivel = "facil";
 let vidas = 3;
@@ -42,7 +44,6 @@ window.addEventListener("popstate", function () {
         document.getElementById("telaInicial").style.display = "block";
     }
 });
-
 
 window.addEventListener("load", () => {
     const nomeSalvo = localStorage.getItem("nomeJogador");
@@ -365,6 +366,15 @@ document.addEventListener("click", () => {
     musicaFundo.play();
 }, { once: true });
 
+const todosSons = [
+    somClick,
+    somTempo,
+    somVitoria,
+    somDerrota,
+    somAcerto,
+    somErro,
+    musicaFundo
+];
 
 
 musicaFundo.loop = true;
@@ -416,8 +426,10 @@ function carregarPergunta() {
     somTempo.pause();
     somTempo.currentTime = 0;
 
-    // 🔊 COMEÇA NOVO SOM
+    if (somTempo.paused) {
     tocarSom(somTempo);
+    }
+
 
 
 if (modoDesafio) {
@@ -442,14 +454,24 @@ if (modoDesafio) {
 
     document.getElementById("progressoTempo").style.width = "100%";
     document.getElementById("progressoTempo").style.background = "lime";
-
+    somTempo.playbackRate = 1;
+    somTempo.tocandoRapido = false;
     clearInterval(intervalo);
+    somTempo.pause();
+    somTempo.currentTime = 0;
+    somTempo.playbackRate = 1;
+    somTempo.tocandoRapido = false;
+
     iniciarTempo();
 
 }
 
 // ⏱️ TEMPO
+let tempoFinal;
+
 function iniciarTempo() {
+    clearInterval(intervalo);
+
     intervalo = setInterval(() => {
         if (pausado) return;
 
@@ -457,33 +479,40 @@ function iniciarTempo() {
 
         document.getElementById("tempo").innerText = "⏱️ " + tempo;
 
-    let tempoMax = modoDesafio ? 20 : 30;
-    let porcentagem = (tempo / tempoMax) * 100;
+        let tempoMax;
+        if (modoDesafio) tempoMax = 20;
+        else if (nivel === "facil") tempoMax = 30;
+        else if (nivel === "medio") tempoMax = 20;
+        else if (nivel === "dificil") tempoMax = 10;
 
+        let porcentagem = (tempo / tempoMax) * 100;
         document.getElementById("progressoTempo").style.width = porcentagem + "%";
 
         if (tempo <= 10) {
             document.getElementById("progressoTempo").style.background = "red";
-                somTempo.playbackRate = 1.5; // mais rápido 😱
+
+            if (!somTempo.tocandoRapido) {
+                somTempo.playbackRate = 1.5;
                 tocarSom(somTempo);
+                somTempo.tocandoRapido = true;
+            }
         }
 
         if (tempo <= 0) {
             clearInterval(intervalo);
 
-            // 🔇 PARA SOM DO TEMPO
             somTempo.pause();
             somTempo.currentTime = 0;
 
-            vidas--; // 🔥 perde vida
+            vidas--;
             document.getElementById("vidas").innerText = "❤️ " + vidas;
 
             if (vidas <= 0) {
-                finalizarJogo(); // só termina se acabar vidas
+                finalizarJogo();
                 return;
             }
 
-            atual++; // 🔥 vai pra próxima pergunta
+            atual++;
 
             setTimeout(() => {
                 carregarPergunta();
@@ -492,6 +521,7 @@ function iniciarTempo() {
 
     }, 1000);
 }
+
 
 // 🎮 RESPONDER
 function responder(opcao) {
@@ -667,6 +697,9 @@ async function obterPosicaoOnline() {
 // 🔄 REINICIAR
 function iniciarJogo() {
         history.pushState({ pagina: "jogo" }, "");
+     pararTodosSons(); // 🔥 limpa tudo
+
+    tocarSom(musicaFundo); // 🔥 COMEÇA A MÚSICA
 
     // 🔊 som
     somClick.currentTime = 0;
@@ -794,13 +827,15 @@ async function verHistorico() {
 }
 
 function reiniciarJogo() {
+    pararTodosSons(); // 🔥 importante
+    tocarSom(musicaFundo); // 🔥 volta música
+
     pontuacao = 0;
     atual = 0;
     tempo = 30;
     vidas = modoDesafio ? 1 : 3;
 
-
-    document.getElementById("vidas").innerText = "❤️ " + vidas; // 🔥 FALTAVA ISSO
+    document.getElementById("vidas").innerText = "❤️ " + vidas;
 
     perguntasSelecionadas = [...perguntas]
         .sort(() => Math.random() - 0.5)
@@ -811,7 +846,6 @@ function reiniciarJogo() {
 
     atualizarEstrela(true);
     jogoFinalizado = false;
-
 
     carregarPergunta();
 }
@@ -958,12 +992,20 @@ function saberMais(){
 }
 document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
-        musicaFundo.pause();
+        // 🔴 saiu do app
+
+        pausado = true; // 🔥 trava o jogo
+
+        pararTodosSons();
+        clearInterval(intervalo);
+
     } else {
-        tocarSom(musicaFundo);
+        // 🟢 voltou pro app
+
+        // 🔥 reinicia TUDO do zero
+        location.reload();
     }
 });
-
 async function loginGoogle() {
     try {
         const result = await signInWithPopup(window.auth, window.provider);
@@ -1047,6 +1089,24 @@ function tocarSom(audio) {
         console.log("Som bloqueado");
     });
 }
+function pararTodosSons() {
+    todosSons.forEach(audio => {
+        audio.pause();
+        audio.currentTime = 0;
+    });
+}
+function pararTudo() {
+    pausado = true;
+
+    clearInterval(intervalo);
+
+    // parar TODOS os sons
+    [somClick, somTempo, somVitoria, somDerrota, somAcerto, somErro, musicaFundo].forEach(som => {
+        som.pause();
+        som.currentTime = 0;
+    });
+}
+
 
 
 
@@ -1068,6 +1128,8 @@ window.saberMais = saberMais;
 window.iniciarDesafio = iniciarDesafio;
 window.loginGoogle = loginGoogle;
 window.mostrarRanking = mostrarRanking;
+window.jogoAtivo = jogoAtivo;
+window.pararTudo = pararTudo;
 
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js")

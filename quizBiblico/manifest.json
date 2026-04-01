@@ -1,6 +1,6 @@
 {
   "name": "Quiz Bíblico",
-  "short_name": "Quiz",
+  "short_name": "Quiz Bíblico",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#000000",
