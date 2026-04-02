@@ -52,6 +52,9 @@ document.addEventListener("click", () => {
             musicaFundo.pause();
             musicaFundo.currentTime = 0;
             audioLiberado = true;
+            console.log("Áudio liberado 🔊");
+        }).catch(() => {
+            console.log("Bloqueado");
         });
     }
 }, { once: true });
@@ -359,23 +362,23 @@ const perguntas = [
 
 
 const TOTAL_PERGUNTAS= 4
-const somClick = new Audio("musica/toc.mp3");
-const somTempo = new Audio("musica/tempo.mp3");
-somTempo.loop = false; // 🔁 fica repetindo
-const somVitoria = new Audio("musica/victoria.mp3");
-const somDerrota = new Audio("musica/lose.mp3");
-const somAcerto = new Audio("musica/acerto.mp3");
-const somErro = new Audio("musica/errado.mp3");
-const musicaFundo = new Audio("musica/fundo.mp3");
+const base = "/quizBiblico/quizBiblico/";
+
+const somClick = new Audio(base + "musica/toc.mp3");
+const somTempo = new Audio(base + "musica/tempo.mp3");
+somTempo.loop = true; // 🔁 repetir som
+const somVitoria = new Audio(base + "musica/victoria.mp3");
+const somDerrota = new Audio(base + "musica/lose.mp3");
+const somAcerto = new Audio(base + "musica/acerto.mp3");
+const somErro = new Audio(base + "musica/errado.mp3");
+const musicaFundo = new Audio(base + "musica/fundo.mp3");
+
 musicaFundo.addEventListener("timeupdate", () => {
     if (musicaFundo.currentTime >= 31) {
         musicaFundo.currentTime = 0; // volta pro início
         musicaFundo.play();
     }
 });
-document.addEventListener("click", () => {
-    musicaFundo.play();
-}, { once: true });
 
 const todosSons = [
     somClick,
@@ -706,12 +709,14 @@ async function obterPosicaoOnline() {
 }
 
 // 🔄 REINICIAR
-function iniciarJogo() { 
-       document.body.click(); // 🔥 força interação
-        history.pushState({ pagina: "jogo" }, "");
-     pararTodosSons(); // 🔥 limpa tudo
+function iniciarJogo() {
+    history.pushState({ pagina: "jogo" }, "");
 
-    tocarSom(musicaFundo); // 🔥 COMEÇA A MÚSICA
+    pararTodosSons(); // limpa tudo
+
+    if (audioLiberado) {
+        tocarSom(musicaFundo);
+    }
 
     // 🔊 som
     somClick.currentTime = 0;
@@ -1094,7 +1099,7 @@ lista.slice(0, 10).forEach((item, i) => {
     }
 }
 function tocarSom(audio) {
-    if (!somAtivo || !audioLiberado) return;
+    if (!somAtivo) return;
 
     audio.pause();
     audio.currentTime = 0;
@@ -1103,6 +1108,7 @@ function tocarSom(audio) {
         console.log("Erro ao tocar som:", e);
     });
 }
+
 
 
 function pararTodosSons() {
