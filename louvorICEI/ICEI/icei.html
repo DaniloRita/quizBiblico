@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>ICEI - Água Viva</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <div id="splash">
+    <img src="imagens/início.jpeg" alt="Splash">
+    
+</div>
+<div id="app">
+    
+    
+    <!-- TOPO PRINCIPAL -->
+    <header class="topoApp">
+        <h2>ICEI – Água Viva</h2>
+        <div class="barraPesquisa">
+        <input
+            type="text"
+            id="pesquisa"
+            placeholder="Pesquisar música..."
+            oninput="filtrarMusicas()"
+        >
+    </div>
+    
+    </header>
+    
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main>
+    
+  <section class="categorias">
+
+  <div class="item" onclick="filtrarCategoria('louvor')">
+    <div class="card">
+      <img src="imagens/louvor.png">
+    </div>
+    <div class="titulo">Louvor</div>
+  </div>
+
+  <div class="item" onclick="filtrarCategoria('hinario')">
+    <div class="card">
+      <img src="imagens/hinario.png">
+    </div>
+    <div class="titulo">Hinários</div>
+  </div>
+
+  <div class="item" onclick="filtrarCategoria('adoracao')">
+    <div class="card">
+      <img src="imagens/coro.png">
+    </div>
+    <div class="titulo">Adoração</div>
+  </div>
+
+</section>
+
+    
+    
+        <section class="musicas">
+            <h3>Músicas</h3>
+            <ul id="listaMusicas"></ul>
+        </section>
+    
+    </main>
+    <section id="telaFavoritos" class="telaSimples">
+        <h3>Favoritos</h3>
+        <ul id="listaFavoritos"></ul>
+    </section>
+    
+    
+    <section id="telaHistorico" class="telaSimples">
+        <h3>Histórico</h3>
+        <ul id="listaHistorico"></ul>
+    </section>
+    
+    <section id="telaDefinicoes" class="telaSimples">
+        <p> <strong>Igreja:</strong>CEI-Água Viva</p> <br><br>
+        <p>Ecrã</p>
+        <hr>
+        <h3>Tema do aplicativo</h3>
+    
+        <div class="seletorTemas">
+            <div class="temaBox azul" onclick="mudarTema('azul')"></div>
+            <div class="temaBox verde" onclick="mudarTema('verde')"></div>
+            <div class="temaBox vermelho" onclick="mudarTema('vermelho')"></div>
+            <div class="temaBox rosa" onclick="mudarTema('rosa')"></div>
+        </div> <br><br>
+        <button onclick="limparHistorico()">Limpar histórico</button> <br><br>
+    
+        <p><strong>Versão do app:</strong>1.2.1</p>
+            <p><Strong>Desenvolvedor:</Strong> <em>Daniritmo</em></p>
+    
+    
+    
+    </section>
+    
+    
+    </section>
+    
+    <!-- TELA DA LETRA (TELA CHEIA) -->
+    <section id="telaLetra" class="telaLetra">
+    
+        <header class="topoLetra">
+            <button onclick="voltar()">⪻⪻</button>
+    
+            <button onclick="autoRolagem()"><abbr title="Rolagem automática">▶</abbr></button>
+            <button onclick="marcarTrecho()">📌</button>
+            
+            <button onclick="salvarNota()"><abbr title="Salvar nota">💾</abbr> </button>
+
+    
+    
+    
+            <span id="tituloLetra" class="tituloTopo"></span>
+    
+            <div class="acoesTopo">
+                <button onclick="diminuirFonte()">A-</button>
+                <button onclick="aumentarFonte()">A+</button>
+                <button id="btnFavorito" onclick="favoritar()">♡</button>
+            </div>
+        </header>
+    
+        <div class="conteudoLetra" id="textoLetra"></div>
+        <textarea id="notaMusica" placeholder="Escreva uma nota..."></textarea>
+    
+    </section>
+    <section id="telaApresentacao" class="telaLetra">
+    
+        
+    
+        <div class="conteudoLetra" id="textoApresentacao"></div>
+    
+    </section>
+    
+    
+    <!-- MENU EM BAIXO -->
+    <nav class="menu">
+        <button onclick="abrirTela('inicial')">🏠<br>Inicial</button>
+        <button onclick="abrirTela('favoritos')">❤️<br>Favorito</button>
+        <button onclick="abrirTela('historico')">🕒<br>Histórico</button>
+        <button onclick="abrirTela('definicoes')">⚙️<br>Definições</button>
+    </nav>
+    
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

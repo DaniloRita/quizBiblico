@@ -1,0 +1,271 @@
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:#f5f5f5;
+}
+
+/* topo principal */
+.topoApp{
+    background:#1e88e5;
+    color:white;
+    text-align:center;
+    padding:12px;
+    text-shadow: 1px 1px 1px darkblue;
+}
+
+main{
+    padding:10px;
+    padding-bottom:80px;
+}
+
+/* section de cima */
+.categorias{
+    display:flex;
+    justify-content:center;
+    gap:10px; /* mais juntos */
+    margin-bottom:15px;
+}
+
+.card{
+    background:white;
+    width:109px;      /* maior */
+    height:110px;     /* maior */
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    border-radius:12px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+    cursor:pointer;
+    text-align: center;
+}
+
+.card{
+    width: 100%;
+    height: 140px;   /* altura do retângulo */
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.card img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;   /* 👉 ISTO é o mais importante */
+}
+.bloco{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.titulo{
+    text-align: center;
+    font-weight: bold;
+}
+
+
+/* músicas */
+.musicas ul{
+    list-style:none;
+    padding:0;
+}
+
+.musicas li{
+    background:white;
+    padding:12px;
+    margin-bottom:6px;
+    border-radius:6px;
+}
+
+/* menu inferior */
+.menu{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    height:65px;
+    background:#1e88e5;
+    display:flex;
+    justify-content:space-around;
+    border-top:1px solid #ccc;
+}
+
+.menu button{
+    background:none;
+    border:none;
+    font-size:20px;
+    color:white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.menu button{
+    background:none;
+    border:none;
+    font-size:18px;
+}
+
+/* ---------- TELA CHEIA DA LETRA ---------- */
+
+.telaLetra{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background:white;
+    display:none;
+    flex-direction:column;
+    z-index:10;
+    text-align: center;
+}
+
+.topoLetra{
+    background:#1e88e5;
+    color:rgb(246, 238, 238);
+    padding:10px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.topoLetra button{
+    background:none;
+    border:none;
+    color:white;
+    font-size:16px;
+}
+
+.tituloTopo{
+    flex:1;
+    font-weight:bold;
+    text-align: center;
+}
+.acoesTopo button{
+    background:none;
+    border:none;
+    color:white;
+    font-size:16px;
+}
+.acoesTopo #btnFavorito.ativo{
+    color:red;
+}
+
+
+.conteudoLetra{
+    flex:1;
+    padding:15px;
+    overflow:auto;
+    white-space: pre-line;
+}
+#btnFavorito{
+    color:white;
+    font-size: 18px;
+}
+
+#btnFavorito.ativo{
+    color: red;
+}
+.telaSimples{
+    display:none;
+    padding:15px;
+}
+.seletorTemas{
+    display:flex;
+    gap:12px;
+    margin-top:15px;
+}
+
+.temaBox{
+    width:45px;
+    height:45px;
+    border-radius:8px;
+    cursor:pointer;
+    border:2px solid #ccc;
+}
+
+/* cada quadrado mostra o próprio degradê */
+
+.temaBox.azul{
+    background: linear-gradient(to bottom, #0d47a1, #42a5f5);
+}
+
+.temaBox.verde{
+    background: linear-gradient(to bottom, #1b5e20, #66bb6a);
+}
+
+.temaBox.vermelho{
+    background: linear-gradient(to bottom, #b71c1c, #ef5350);
+}
+
+.temaBox.rosa{
+    background: linear-gradient(to bottom, #880e4f, #f48fb1);
+}
+.barraPesquisa{
+    padding:5px;
+    
+}
+
+.barraPesquisa input{
+    width:100%;
+    padding:10px;
+    border-radius:15px;
+    border:1px solid #ccc;
+    font-size:14px;
+    align-content: center;
+    box-shadow: 4px 4px  5px  black;
+}
+/* MODO APRESENTAÇÃO */
+
+.telaLetra.apresentacao .conteudoLetra{
+    font-size: 100px;   /* letras enormes */
+    line-height: 1.6;
+}
+
+#splash{
+    position: fixed;
+    inset: 0;
+    background: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+#splash img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#app{
+    display: none;
+}
+.item{
+  width: 110px;
+  text-align: center;
+}
+
+.card{
+  width: 110px;
+  height: 110px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.card img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.titulo{
+  margin-top: 6px;
+  font-weight: bold;
+}
+#tituloLetra{
+    text-align: center;
+}
