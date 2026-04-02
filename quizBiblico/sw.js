@@ -1,22 +1,25 @@
-const CACHE_NAME = "quiz-cache-v7";
+const CACHE_NAME = "quiz-cache-v9";
 
 const urlsToCache = [
-  "./",
-  "./index.html",
-  "./app.js",
-  "./manifest.json",
+  "/quizBiblico/quizBiblico/",
+  "/quizBiblico/quizBiblico/index.html",
+  "/quizBiblico/quizBiblico/app.js",
+  "/quizBiblico/quizBiblico/manifest.json",
 
-  "./musica/toc.mp3",
-  "./musica/tempo.mp3",
-  "./musica/victoria.mp3",
-  "./musica/lose.mp3",
-  "./musica/acerto.mp3",
-  "./musica/errado.mp3",
-  "./musica/fundo.mp3",
+  // 🔊 ÁUDIOS
+  "/quizBiblico/quizBiblico/musica/toc.mp3",
+  "/quizBiblico/quizBiblico/musica/tempo.mp3",
+  "/quizBiblico/quizBiblico/musica/victoria.mp3",
+  "/quizBiblico/quizBiblico/musica/lose.mp3",
+  "/quizBiblico/quizBiblico/musica/acerto.mp3",
+  "/quizBiblico/quizBiblico/musica/errado.mp3",
+  "/quizBiblico/quizBiblico/musica/fundo.mp3",
 
-  "./img/icon-192.png",
-  "./img/icon-512.png"
+  // 🖼️ IMAGENS
+  "/quizBiblico/quizBiblico/img/icon-192.png",
+  "/quizBiblico/quizBiblico/img/icon-512.png"
 ];
+
 
 self.addEventListener("install", event => {
   event.waitUntil(
@@ -24,11 +27,19 @@ self.addEventListener("install", event => {
       .then(cache => cache.addAll(urlsToCache))
   );
 });
-
 self.addEventListener("fetch", event => {
   event.respondWith(
     caches.match(event.request)
-      .then(response => response || fetch(event.request))
+      .then(response => {
+        if (response) return response;
+
+        return fetch(event.request).catch(() => {
+          // 🔥 fallback offline
+          if (event.request.mode === "navigate") {
+            return caches.match("/quizBiblico/quizBiblico/index.html");
+          }
+        });
+      })
   );
 });
 
